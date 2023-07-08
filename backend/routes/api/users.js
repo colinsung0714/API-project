@@ -9,27 +9,58 @@ const validateSignup = [
   check('email')
     .exists({ checkFalsy: true })
     .isEmail()
-    .withMessage('Please provide a valid email.'),
+    .withMessage("Invalid email"),
   check('username')
     .exists({ checkFalsy: true })
-    .isLength({ min: 4 })
-    .withMessage('Please provide a username with at least 4 characters.'),
-  check('username')
-    .not()
-    .isEmail()
-    .withMessage('Username cannot be an email.'),
-  check('password')
+    .isLength({ min: 1, max:12})
+    .withMessage("Username is required"),
+  check('firstName')
     .exists({ checkFalsy: true })
-    .isLength({ min: 6 })
-    .withMessage('Password must be 6 characters or more.'),
+    .isAlpha()
+    .withMessage("First Name is required"),
+  check('lastName')
+    .exists({ checkFalsy: true })
+    .isAlpha()
+    .withMessage('Last Name is required'),
   handleValidationErrors
 ];
 
 router.post(
-  '',
+  '/',
   validateSignup,
-  async (req, res) => {
+  async (req, res, next) => {
     const { firstName, lastName, email, password, username } = req.body;
+    const emailcheck = await User.findAll({
+      where: {
+        email
+      }
+    })
+   
+    const usernameCheck = await User.findAll({
+      where: {
+        username
+      }
+    })
+
+    if (emailcheck.length) {
+      const err = new Error();
+      err.status = 500
+      err.message = "User already exists"
+      err.errors = {
+        email: "User with that email already exists"
+      }
+      next(err)
+    }
+
+    if (usernameCheck.length) {
+      const err = new Error();
+      err.status = 500
+      err.message = "User already exists"
+      err.errors = {
+        email: "User with that username already exists"
+      }
+      next(err)
+    }
     const hashedPassword = bcrypt.hashSync(password);
     const user = await User.create({ firstName, lastName, email, username, hashedPassword });
 
