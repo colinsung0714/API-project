@@ -59,8 +59,10 @@ router.get('/:spotId', async (req, res, next)=>{
             model:Review,
             attributes:[]
         }
-    ]
+    ],
+    group:'Spot.id'
     }
+    
     )
    
     if(!oneSpot) {
