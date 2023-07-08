@@ -51,7 +51,7 @@ router.post(
       }
       next(err)
     }
-
+    
     if (usernameCheck.length) {
       const err = new Error();
       err.status = 500
