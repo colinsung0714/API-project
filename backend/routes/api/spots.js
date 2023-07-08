@@ -18,6 +18,9 @@ router.get('/current',requireAuth,async (req, res)=>{
             attributes:['url']
         })
         spot = spot.toJSON();
+        spot.lat = Number(spot.lat)
+        spot.lng = Number(spot.lng)
+        spot.price = Number(spot.price)
         for(let num of avgRating) {
             num = num.toJSON();
             spot.avgRating = parseInt((Object.values(num)[0]));
