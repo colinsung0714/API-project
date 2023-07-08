@@ -20,7 +20,7 @@ router.get('/current',requireAuth,async (req, res)=>{
         spot = spot.toJSON();
         for(let num of avgRating) {
             num = num.toJSON();
-            spot.avgRating = Number.parseFloat((Object.values(num)[0])).toFixed(1);
+            spot.avgRating = parseInt((Object.values(num)[0]));
         }
         for (let url of previewImage) {
             url = url.toJSON();
@@ -47,7 +47,7 @@ router.get('/', async (req, res)=>{
         spot = spot.toJSON();
         for(let num of avgRating) {
             num = num.toJSON();
-            spot.avgRating = Number.parseFloat((Object.values(num)[0])).toFixed(1);
+            spot.avgRating = parseInt((Object.values(num)[0]));
         }
         for (let url of previewImage) {
             url = url.toJSON();
