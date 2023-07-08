@@ -24,7 +24,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull:false,
         references:{
-          model:"Users"
+          model:'Users'
         }
       },
       review: {
@@ -48,7 +48,7 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "Reviews";
+    options.tableName = 'Reviews';
     await queryInterface.dropTable(options);
   }
 };
