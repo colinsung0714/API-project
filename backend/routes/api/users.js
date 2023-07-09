@@ -12,15 +12,13 @@ const validateSignup = [
     .withMessage("Invalid email"),
   check('username')
     .exists({ checkFalsy: true })
-    .isLength({ min: 1, max:12})
+    .notEmpty()
     .withMessage("Username is required"),
   check('firstName')
     .exists({ checkFalsy: true })
-    .isAlpha()
     .withMessage("First Name is required"),
   check('lastName')
     .exists({ checkFalsy: true })
-    .isAlpha()
     .withMessage('Last Name is required'),
   handleValidationErrors
 ];
