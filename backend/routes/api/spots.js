@@ -59,6 +59,8 @@ router.get('/current', requireAuth, async (req, res) => {
         spot.lat = Number(spot.lat)
         spot.lng = Number(spot.lng)
         spot.price = Number(spot.price)
+        spot.createdAt = spot.createdAt.toISOString().replace('T', ' ').substring(0, 19)
+        spot.updatedAt = spot.updatedAt.toISOString().replace('T', ' ').substring(0, 19)
         for (let num of avgRating) {
             num = num.toJSON();
             spot.avgRating = parseInt((Object.values(num)[0]));
@@ -126,6 +128,8 @@ router.get('/:spotId', async (req, res, next) => {
     oneSpot.price = Number(oneSpot.price)
     oneSpot.numReviews = Number(oneSpot.numReviews)
     oneSpot.avgStarRating = Number(oneSpot.avgStarRating)
+    oneSpot.createdAt = oneSpot.createdAt.toISOString().replace('T', ' ').substring(0, 19)
+    oneSpot.updatedAt = oneSpot.updatedAt.toISOString().replace('T', ' ').substring(0, 19)
     res.json(oneSpot)
 })
 
@@ -143,6 +147,8 @@ router.get('/', async (req, res) => {
         spot.lat = Number(spot.lat)
         spot.lng = Number(spot.lng)
         spot.price = Number(spot.price)
+        spot.createdAt = spot.createdAt.toISOString().replace('T', ' ').substring(0, 19)
+        spot.updatedAt = spot.updatedAt.toISOString().replace('T', ' ').substring(0, 19)
         for (let num of avgRating) {
             num = num.toJSON();
             spot.avgRating = parseInt((Object.values(num)[0]));
@@ -198,10 +204,12 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
 
     if (currentUser) {
         let newSpot = await currentUser.createSpot({ address, city, state, country, lat, lng, name, description, price })
-        
+        newSpot = newSpot.toJSON()
         newSpot.lat = Number(newSpot.lat)
         newSpot.lng = Number(newSpot.lng)
         newSpot.price = Number(newSpot.price)
+        newSpot.createdAt = newSpot.createdAt.toISOString().replace('T', ' ').substring(0, 19)
+        newSpot.updatedAt = newSpot.updatedAt.toISOString().replace('T', ' ').substring(0, 19)
         res.status(201).json(newSpot)
     }
 })
@@ -233,6 +241,8 @@ router.put('/:spotId',requireAuth, validateSpot, async (req, res, next)=>{
             currentSpot[0].lat = Number(currentSpot[0].lat)
             currentSpot[0].lng = Number(currentSpot[0].lng)
             currentSpot[0].price = Number(currentSpot[0].price)
+            currentSpot[0].createdAt =currentSpot[0].createdAt.toISOString().replace('T', ' ').substring(0, 19)
+            currentSpot[0].updatedAt =currentSpot[0].updatedAt.toISOString().replace('T', ' ').substring(0, 19)
             res.json(currentSpot[0])
         } else {
             const err = new Error()
