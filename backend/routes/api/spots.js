@@ -198,11 +198,53 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
 
     if (currentUser) {
         let newSpot = await currentUser.createSpot({ address, city, state, country, lat, lng, name, description, price })
-        console.log(newSpot)
+        
         newSpot.lat = Number(newSpot.lat)
         newSpot.lng = Number(newSpot.lng)
         newSpot.price = Number(newSpot.price)
         res.status(201).json(newSpot)
+    }
+})
+
+router.put('/:spotId',requireAuth, validateSpot, async (req, res, next)=>{
+    const spot = await Spot.findByPk(req.params.spotId)
+    if(spot) {
+        const currentUser = await User.findByPk(req.user.id)
+        let currentSpot = await currentUser.getSpots({
+            where: {
+                ownerId: req.user.id,
+                id: req.params.spotId
+            }
+        })
+        if(currentSpot.length) {
+            
+            const { address, city, state, country, lat, lng, name, description, price } = req.body
+            currentSpot[0].address = address
+            currentSpot[0].city = city
+            currentSpot[0].state = state
+            currentSpot[0].country = country
+            currentSpot[0].lat = lat
+            currentSpot[0].lng = lng
+            currentSpot[0].name = name
+            currentSpot[0].description = description
+            currentSpot[0].price = price
+            await currentSpot[0].save()
+            currentSpot[0]= currentSpot[0].toJSON()
+            currentSpot[0].lat = Number(currentSpot[0].lat)
+            currentSpot[0].lng = Number(currentSpot[0].lng)
+            currentSpot[0].price = Number(currentSpot[0].price)
+            res.json(currentSpot[0])
+        } else {
+            const err = new Error()
+            err.status = 401
+            err.message = 'Spot must belong to the current user'
+            next(err)
+        }
+    } else {
+        const err = new Error();
+        err.status = 404;
+        err.message = "Spot couldn't be found"
+        next(err)
     }
 })
 
