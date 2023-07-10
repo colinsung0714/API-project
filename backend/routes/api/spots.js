@@ -1,27 +1,65 @@
 const express = require('express')
 const router = express.Router();
 const { Spot, sequelize, Review, SpotImage, User } = require('../../db/models')
-const { requireAuth } =require('../../utils/auth')
+const { requireAuth } = require('../../utils/auth')
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
+const validateSpot = [
+    check('address')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .withMessage("Street address is required"),
+    check('city')
+        .exists({ checkFalsy: true })
+        .withMessage("City is required"),
+    check('state')
+        .exists({ checkFalsy: true })
+        .withMessage("State is required"),
+    check('country')
+        .exists({ checkFalsy: true })
+        .withMessage("Country is required"),
+    check('lat')
+        .exists({ checkFalsy: true })
+        .isDecimal()
+        .withMessage("Latitude is not valid"),
+    check('lng')
+        .exists({ checkFalsy: true })
+        .isDecimal()
+        .withMessage("Longitude is not valid"),
+    check('name')
+        .exists({ checkFalsy: true })
+        .isLength({ max:50 })
+        .withMessage("Name must be less than 50 characters"),
+    check('description')
+        .exists({ checkFalsy: true })
+        .withMessage("Description is required"),
+    check('price')
+        .exists({ checkFalsy: true })
+        .isDecimal()
+        .withMessage("Price per day is required"),
 
-router.get('/current',requireAuth,async (req, res)=>{
+    handleValidationErrors
+];
+
+router.get('/current', requireAuth, async (req, res) => {
     const allSpots = await Spot.findAll({
         where: {
             ownerId: req.user.id
         }
     })
     const Spots = [];
-    for(let spot of allSpots) {
+    for (let spot of allSpots) {
         let avgRating = await spot.getReviews({
-            attributes:[[sequelize.fn('AVG', sequelize.col('stars')), 'avgRating']]
+            attributes: [[sequelize.fn('AVG', sequelize.col('stars')), 'avgRating']]
         })
         let previewImage = await spot.getSpotImages({
-            attributes:['url']
+            attributes: ['url']
         })
         spot = spot.toJSON();
         spot.lat = Number(spot.lat)
         spot.lng = Number(spot.lng)
         spot.price = Number(spot.price)
-        for(let num of avgRating) {
+        for (let num of avgRating) {
             num = num.toJSON();
             spot.avgRating = parseInt((Object.values(num)[0]));
         }
@@ -31,45 +69,45 @@ router.get('/current',requireAuth,async (req, res)=>{
         }
         Spots.push(spot);
     }
-    
-  
-    res.json({Spots})
+
+
+    res.json({ Spots })
 
 })
 
-router.get('/:spotId', async (req, res, next)=>{
+router.get('/:spotId', async (req, res, next) => {
     let oneSpot = await Spot.findByPk(req.params.spotId)
-    if(!oneSpot) {
+    if (!oneSpot) {
         const err = new Error("Spot couldn't be found")
         err.status = 404;
         next(err)
     }
 
-    oneSpot = await Spot.findByPk(req.params.spotId, 
+    oneSpot = await Spot.findByPk(req.params.spotId,
         {
-        attributes:['id','ownerId','address','city','state','country','lat','lng','name','description','price','createdAt','updatedAt',[sequelize.fn('COUNT', sequelize.col('Reviews.id')), 'numReviews'],[sequelize.fn('AVG', sequelize.col('Reviews.stars')), 'avgStarRating']],
-        include:[{
-            model:SpotImage,
-            attributes:['id','url','preview']
-        },{
-            model:User,
-            as:'Owner',
-            attributes:['id','firstName','lastName']
-        },{
-            model:Review,
-            attributes:[]
+            attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt', [sequelize.fn('COUNT', sequelize.col('Reviews.id')), 'numReviews'], [sequelize.fn('AVG', sequelize.col('Reviews.stars')), 'avgStarRating']],
+            include: [{
+                model: SpotImage,
+                attributes: ['id', 'url', 'preview']
+            }, {
+                model: User,
+                as: 'Owner',
+                attributes: ['id', 'firstName', 'lastName']
+            }, {
+                model: Review,
+                attributes: []
+            }
+            ],
+            group: [
+                'Spot.id',
+                'SpotImages.id',
+                'Owner.id'
+            ]
         }
-    ],
-    group:[
-        'Spot.id',
-        'SpotImages.id',
-        'Owner.id'
-    ]
-    }
-    
+
     )
-   
-    if(!oneSpot) {
+
+    if (!oneSpot) {
         const err = new Error("Spot couldn't be found")
         err.status = 404;
         next(err)
@@ -81,7 +119,7 @@ router.get('/:spotId', async (req, res, next)=>{
     //     starsSum += review.stars
     // }
     // const avgStarRating = starsSum/numReviews
-   
+
     oneSpot = oneSpot.toJSON();
     oneSpot.lat = Number(oneSpot.lat)
     oneSpot.lng = Number(oneSpot.lng)
@@ -91,21 +129,21 @@ router.get('/:spotId', async (req, res, next)=>{
     res.json(oneSpot)
 })
 
-router.get('/', async (req, res)=>{
+router.get('/', async (req, res) => {
     const allSpots = await Spot.findAll({})
     const Spots = [];
-    for(let spot of allSpots) {
+    for (let spot of allSpots) {
         let avgRating = await spot.getReviews({
-            attributes:[[sequelize.fn('AVG', sequelize.col('stars')), 'avgRating']]
+            attributes: [[sequelize.fn('AVG', sequelize.col('stars')), 'avgRating']]
         })
         let previewImage = await spot.getSpotImages({
-            attributes:['url']
+            attributes: ['url']
         })
         spot = spot.toJSON();
         spot.lat = Number(spot.lat)
         spot.lng = Number(spot.lng)
         spot.price = Number(spot.price)
-        for(let num of avgRating) {
+        for (let num of avgRating) {
             num = num.toJSON();
             spot.avgRating = parseInt((Object.values(num)[0]));
         }
@@ -115,9 +153,23 @@ router.get('/', async (req, res)=>{
         }
         Spots.push(spot);
     }
+
+
+    res.json({ Spots })
+})
+
+router.post('/', requireAuth, validateSpot, async (req, res) => {
+    const { address, city, state, country, lat, lng, name, description, price } = req.body
+    const currentUser = await User.findByPk(req.user.id)
     
-  
-    res.json({Spots})
+    if(currentUser){
+    let newSpot = await currentUser.createSpot({ address, city, state, country, lat, lng, name, description, price })
+    console.log(newSpot)
+    newSpot.lat = Number(newSpot.lat)
+    newSpot.lng = Number(newSpot.lng)
+    newSpot.price = Number(newSpot.price)
+    res.status(201).json(newSpot)
+    }
 })
 
 module.exports = router;
