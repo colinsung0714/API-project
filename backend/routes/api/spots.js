@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router();
 const { Spot, sequelize, Review, SpotImage, User } = require('../../db/models')
 const { requireAuth } = require('../../utils/auth')
-const { check } = require('express-validator');
+const { check, body } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const validateSpot = [
     check('address')
@@ -28,7 +28,7 @@ const validateSpot = [
         .withMessage("Longitude is not valid"),
     check('name')
         .exists({ checkFalsy: true })
-        .isLength({ max:50 })
+        .isLength({ max: 50 })
         .withMessage("Name must be less than 50 characters"),
     check('description')
         .exists({ checkFalsy: true })
@@ -158,17 +158,51 @@ router.get('/', async (req, res) => {
     res.json({ Spots })
 })
 
+router.post('/:spotId/images', requireAuth, async (req, res, next) => {
+    const spot = await Spot.findByPk(req.params.spotId)
+    if (spot) {
+        const currentUser = await User.findByPk(req.user.id)
+        let currentSpot = await currentUser.getSpots({
+            where: {
+                ownerId: req.user.id,
+                id: req.params.spotId
+            }
+        })
+        if (currentSpot.length) {
+            const { url , preview } = req.body
+            let newImg = await currentSpot[0].createSpotImage({ url , preview })
+            newImg = newImg.toJSON()
+            const body = {}
+            body.id = newImg.id
+            body.url = newImg.url
+            body.preview = newImg.preview
+            res.json(body)
+        } else {
+            const err = new Error()
+            err.status = 401
+            err.message = 'Spot must belong to the current user'
+            next(err)
+        }
+    } else {
+        const err = new Error();
+        err.status = 404;
+        err.message = "Spot couldn't be found"
+        next(err)
+    }
+})
+
+
 router.post('/', requireAuth, validateSpot, async (req, res) => {
     const { address, city, state, country, lat, lng, name, description, price } = req.body
     const currentUser = await User.findByPk(req.user.id)
-    
-    if(currentUser){
-    let newSpot = await currentUser.createSpot({ address, city, state, country, lat, lng, name, description, price })
-    console.log(newSpot)
-    newSpot.lat = Number(newSpot.lat)
-    newSpot.lng = Number(newSpot.lng)
-    newSpot.price = Number(newSpot.price)
-    res.status(201).json(newSpot)
+
+    if (currentUser) {
+        let newSpot = await currentUser.createSpot({ address, city, state, country, lat, lng, name, description, price })
+        console.log(newSpot)
+        newSpot.lat = Number(newSpot.lat)
+        newSpot.lng = Number(newSpot.lng)
+        newSpot.price = Number(newSpot.price)
+        res.status(201).json(newSpot)
     }
 })
 
