@@ -335,15 +335,6 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
             }
         })
         if (currentSpot.length) {
-            await SpotImage.destroy({ where: { spotId: req.params.spotId } });
-            await Booking.destroy({ where: { spotId: req.params.spotId } });
-            const review = await Review.findOne({
-                where: {
-                    spotId: req.params.spotId
-                }
-            })
-            await ReviewImage.destroy({ where: { reviewId: review.id } })
-            await review.destroy();
             await currentSpot[0].destroy()
             res.json({ message: "Successfully deleted" })
         } else {
