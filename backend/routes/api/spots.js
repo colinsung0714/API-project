@@ -175,8 +175,8 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
             }
         })
         if (currentSpot.length) {
-            const { url , preview } = req.body
-            let newImg = await currentSpot[0].createSpotImage({ url , preview })
+            const { url, preview } = req.body
+            let newImg = await currentSpot[0].createSpotImage({ url, preview })
             newImg = newImg.toJSON()
             const body = {}
             body.id = newImg.id
@@ -214,9 +214,9 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
     }
 })
 
-router.put('/:spotId',requireAuth, validateSpot, async (req, res, next)=>{
+router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
     const spot = await Spot.findByPk(req.params.spotId)
-    if(spot) {
+    if (spot) {
         const currentUser = await User.findByPk(req.user.id)
         let currentSpot = await currentUser.getSpots({
             where: {
@@ -224,8 +224,8 @@ router.put('/:spotId',requireAuth, validateSpot, async (req, res, next)=>{
                 id: req.params.spotId
             }
         })
-        if(currentSpot.length) {
-            
+        if (currentSpot.length) {
+
             const { address, city, state, country, lat, lng, name, description, price } = req.body
             currentSpot[0].address = address
             currentSpot[0].city = city
@@ -237,12 +237,12 @@ router.put('/:spotId',requireAuth, validateSpot, async (req, res, next)=>{
             currentSpot[0].description = description
             currentSpot[0].price = price
             await currentSpot[0].save()
-            currentSpot[0]= currentSpot[0].toJSON()
+            currentSpot[0] = currentSpot[0].toJSON()
             currentSpot[0].lat = Number(currentSpot[0].lat)
             currentSpot[0].lng = Number(currentSpot[0].lng)
             currentSpot[0].price = Number(currentSpot[0].price)
-            currentSpot[0].createdAt =currentSpot[0].createdAt.toISOString().replace('T', ' ').substring(0, 19)
-            currentSpot[0].updatedAt =currentSpot[0].updatedAt.toISOString().replace('T', ' ').substring(0, 19)
+            currentSpot[0].createdAt = currentSpot[0].createdAt.toISOString().replace('T', ' ').substring(0, 19)
+            currentSpot[0].updatedAt = currentSpot[0].updatedAt.toISOString().replace('T', ' ').substring(0, 19)
             res.json(currentSpot[0])
         } else {
             const err = new Error()
@@ -258,9 +258,9 @@ router.put('/:spotId',requireAuth, validateSpot, async (req, res, next)=>{
     }
 })
 
-router.delete('/:spotId',requireAuth, async (req, res, next)=>{
+router.delete('/:spotId', requireAuth, async (req, res, next) => {
     const spot = await Spot.findByPk(req.params.spotId)
-    if(spot) {
+    if (spot) {
         const currentUser = await User.findByPk(req.user.id)
         const currentSpot = await currentUser.getSpots({
             where: {
@@ -268,12 +268,18 @@ router.delete('/:spotId',requireAuth, async (req, res, next)=>{
                 id: req.params.spotId
             }
         })
-        if(currentSpot.length) {
+        if (currentSpot.length) {
             await SpotImage.destroy({ where: { spotId: req.params.spotId } });
             await Booking.destroy({ where: { spotId: req.params.spotId } });
-            await Review.destroy({ where: { spotId: req.params.spotId } });
+            const review = await Review.findOne({
+                where: {
+                    spotId: req.params.spotId
+                }
+            })
+            await review.destroy();
+            await ReviewImage.destroy({ where: { reviewId: review.id } })
             await currentSpot[0].destroy()
-            res.json({message:"Successfully deleted"})
+            res.json({ message: "Successfully deleted" })
         } else {
             const err = new Error()
             err.status = 401
