@@ -269,6 +269,7 @@ router.delete('/:spotId',requireAuth, async (req, res, next)=>{
             }
         })
         if(currentSpot.length) {
+            await SpotImage.destroy({ where: { spotId: req.params.spotId } });
             await currentSpot[0].destroy()
             res.json({message:"Successfully deleted"})
         } else {
