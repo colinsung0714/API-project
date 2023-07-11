@@ -48,10 +48,10 @@ const validateReview = [
     check('stars')
         .exists({ checkFalsy: true })
         .isInt().withMessage("Stars must be an integer from 1 to 5")
-        .custom((value)=>{
-            if(value < 1 || value > 5) {
+        .custom((value) => {
+            if (value < 1 || value > 5) {
                 return false
-            } 
+            }
             return true
         })
         .withMessage("Stars must be an integer from 1 to 5"),
@@ -93,6 +93,53 @@ router.get('/current', requireAuth, async (req, res) => {
 
     res.json({ Spots })
 
+})
+
+router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
+    const currentUser = await User.findByPk(req.user.id)
+    const spots = await Spot.findAll({ where: { id: req.params.spotId } })
+    if (spots.length) {
+        const bookingArr = [];
+        for (let spot of spots) {
+            let bookings = await spot.getBookings({
+                include: [
+                    {
+                        model: User,
+                        attributes: ['id', 'firstName', 'lastName']
+                    }
+                ],
+                attributes:['id','spotId','userId','startDate','endDate','createdAt','updatedAt']
+            })
+            for (let booking of bookings) {
+                const bookingObj = {}
+                if (spot.ownerId === currentUser.id) {
+                    booking = booking.toJSON()
+                    bookingObj.User = booking.User
+                    bookingObj.id = booking.id
+                    bookingObj.spotId = booking.spotId
+                    bookingObj.userId = booking.userId
+                    bookingObj.startDate = booking.startDate.toISOString().replace('T', ' ').substring(0, 10)
+                    bookingObj.endDate = booking.endDate.toISOString().replace('T', ' ').substring(0, 10)
+                    bookingObj.createdAt = booking.createdAt.toISOString().replace('T', ' ').substring(0, 19)
+                    bookingObj.updatedAt = booking.updatedAt.toISOString().replace('T', ' ').substring(0, 19)
+                    bookingArr.push(bookingObj)
+                } else {
+                    bookingObj.spotId = booking.spotId,
+                    bookingObj.startDate = booking.startDate.toISOString().replace('T', ' ').substring(0, 10)
+                    bookingObj.endDate = booking.endDate.toISOString().replace('T', ' ').substring(0, 10)
+                    bookingArr.push(bookingObj)
+                }
+            }
+
+        }
+
+        res.json({ Bookings: bookingArr })
+    } else {
+        const err = new Error();
+        err.status = 404
+        err.message = "Spot couldn't be found"
+        next(err)
+    }
 })
 
 router.get('/:spotId/reviews', async (req, res, next) => {
