@@ -40,6 +40,24 @@ const validateSpot = [
 
     handleValidationErrors
 ];
+const validateReview = [
+    check('review')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .withMessage("Review text is required"),
+    check('stars')
+        .exists({ checkFalsy: true })
+        .isInt().withMessage("Stars must be an integer from 1 to 5")
+        .custom((value)=>{
+            if(value < 1 || value > 5) {
+                return false
+            } 
+            return true
+        })
+        .withMessage("Stars must be an integer from 1 to 5"),
+
+    handleValidationErrors
+]
 
 router.get('/current', requireAuth, async (req, res) => {
     const allSpots = await Spot.findAll({
@@ -78,29 +96,18 @@ router.get('/current', requireAuth, async (req, res) => {
 })
 
 router.get('/:spotId/reviews', async (req, res, next) => {
-    const reviews = await Review.findAll({
-        include:
-        [
-            {
-                model:User,
-                attributes:['id','firstName','lastName']
-            },
-            {
-                model:ReviewImage,
-                attributes:['id','url']
-            }
-        ],
-        where: {
-            spotId: req.params.spotId
-        }
-    })
-    const spot = await Spot.findAll({
-        where:{
-            id:req.params.spotId
-        }
-    })
-    if(spot.length) {
-        res.json({Reviews:reviews})
+    const spot = await Spot.findByPk(req.params.spotId)
+    if (spot) {
+        const reviews = await spot.getReviews({
+            include: [{
+                model: User,
+                attributes: ['id', 'firstName', 'lastName']
+            }, {
+                model: ReviewImage,
+                attributes: ['id', 'url']
+            }]
+        })
+        res.json({ Reviews: reviews })
     } else {
         const err = new Error();
         err.status = 404
@@ -220,6 +227,33 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
             err.status = 401
             err.message = 'Spot must belong to the current user'
             next(err)
+        }
+    } else {
+        const err = new Error();
+        err.status = 404;
+        err.message = "Spot couldn't be found"
+        next(err)
+    }
+})
+
+router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, next) => {
+    const spot = await Spot.findByPk(req.params.spotId)
+    const { review, stars } = req.body
+    if (spot) {
+        const reviews = await spot.getReviews({ where: { userId: req.user.id } })
+        if (reviews.length) {
+            const err = new Error();
+            err.status = 500;
+            err.message = "User already has a review for this spot"
+            next(err)
+        } else {
+            const currentUser = await User.findByPk(req.user.id)
+            let newReview = await spot.createReview({ review, stars, userId: currentUser.id })
+            newReview = newReview.toJSON()
+            newReview.stars = Number(newReview.stars)
+            newReview.createdAt = newReview.createdAt.toISOString().replace('T', ' ').substring(0, 19)
+            newReview.updatedAt = newReview.updatedAt.toISOString().replace('T', ' ').substring(0, 19)
+            res.json(newReview)
         }
     } else {
         const err = new Error();
