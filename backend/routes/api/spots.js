@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router();
-const { Spot, sequelize, Review, SpotImage, User } = require('../../db/models')
+const { Spot, sequelize, Review, SpotImage, User, Booking } = require('../../db/models')
 const { requireAuth } = require('../../utils/auth')
 const { check, body } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -244,6 +244,33 @@ router.put('/:spotId',requireAuth, validateSpot, async (req, res, next)=>{
             currentSpot[0].createdAt =currentSpot[0].createdAt.toISOString().replace('T', ' ').substring(0, 19)
             currentSpot[0].updatedAt =currentSpot[0].updatedAt.toISOString().replace('T', ' ').substring(0, 19)
             res.json(currentSpot[0])
+        } else {
+            const err = new Error()
+            err.status = 401
+            err.message = 'Spot must belong to the current user'
+            next(err)
+        }
+    } else {
+        const err = new Error();
+        err.status = 404;
+        err.message = "Spot couldn't be found"
+        next(err)
+    }
+})
+
+router.delete('/:spotId',requireAuth, async (req, res, next)=>{
+    const spot = await Spot.findByPk(req.params.spotId)
+    if(spot) {
+        const currentUser = await User.findByPk(req.user.id)
+        const currentSpot = await currentUser.getSpots({
+            where: {
+                ownerId: req.user.id,
+                id: req.params.spotId
+            }
+        })
+        if(currentSpot.length) {
+            await currentSpot[0].destroy()
+            res.json({message:"Successfully deleted"})
         } else {
             const err = new Error()
             err.status = 401
