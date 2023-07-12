@@ -355,7 +355,7 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
                         errObj.endDate = "End date conflicts with an existing booking"
                     }
                     err.errors = errObj
-                    next(err)
+                    return next(err)
                 } 
                 if (pivEndDate === bookingEndDate || (pivEndDate > bookingStartDate && pivEndDate < bookingEndDate)) {
                     const err = new Error()
@@ -367,7 +367,7 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
                         errObj.startDate = "Start date conflicts with an existing booking"
                     }
                     err.errors = errObj
-                    next(err)
+                    return next(err)
                 } 
             }
                 const body = {}
