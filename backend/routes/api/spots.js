@@ -384,7 +384,7 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
                 res.json(bodyBooking)
         } else {
             const err = new Error()
-            err.status = 401
+            err.status = 403
             err.message = 'Spot must NOT belong to the current user'
             next(err)
         }
@@ -417,7 +417,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
             res.json(body)
         } else {
             const err = new Error()
-            err.status = 401
+            err.status = 403
             err.message = 'Spot must belong to the current user'
             next(err)
         }
@@ -505,7 +505,7 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
             res.json(currentSpot[0])
         } else {
             const err = new Error()
-            err.status = 401
+            err.status = 403
             err.message = 'Spot must belong to the current user'
             next(err)
         }
@@ -532,7 +532,7 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
             res.json({ message: "Successfully deleted" })
         } else {
             const err = new Error()
-            err.status = 401
+            err.status = 403
             err.message = 'Spot must belong to the current user'
             next(err)
         }

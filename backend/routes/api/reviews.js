@@ -88,7 +88,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
             }
         } else {
             const err = new Error()
-            err.status = 401
+            err.status = 403
             err.message = 'Review must belong to the current user'
             next(err)
         }
@@ -116,7 +116,7 @@ router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => 
             res.json(editReview)
         } else {
             const err = new Error()
-            err.status = 401
+            err.status = 403    
             err.message = 'Review must belong to the current user'
             next(err)
         }
@@ -142,7 +142,7 @@ router.delete('/:reviewId', requireAuth, async (req, res, next)=>{
           })
         } else {
             const err = new Error()
-            err.status = 401
+            err.status = 403
             err.message = 'Review must belong to the current user'
             next(err)
         }

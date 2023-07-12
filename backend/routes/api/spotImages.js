@@ -19,7 +19,7 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
             })
         } else {
             const err = new Error()
-            err.status = 401
+            err.status = 403
             err.message = 'Spot must belong to the current user'
             next(err)
         }
