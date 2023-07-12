@@ -3,30 +3,25 @@ const router = express.Router();
 const { Spot, sequelize, Review, SpotImage, User, Booking, ReviewImage } = require('../../db/models')
 const { requireAuth } = require('../../utils/auth')
 
-
 router.delete('/:imageId', requireAuth, async (req, res, next) => {
-    const spotImage = await SpotImage.findByPk(req.params.imageId, {
-        include: [{
-            model: Spot
-        }]
-    })
     const currentUser = await User.findByPk(req.user.id)
-    if (spotImage) {
-        if (spotImage.Spot.ownerId === currentUser.id) {
-            await spotImage.destroy();
+    const review = await Review.findByPk(req.params.imageId)
+    if (review) {
+        if (review.userId === currentUser.id) {
+            await review.destroy()
             res.json({
-                message: "Successfully deleted"
+                message: 'Successfully deleted'
             })
         } else {
             const err = new Error()
             err.status = 401
-            err.message = 'Spot must belong to the current user'
+            err.message = 'Review must belong to the current user'
             next(err)
         }
     } else {
         const err = new Error();
         err.status = 404;
-        err.message = "Spot Image couldn't be found"
+        err.message = "Review Image couldn't be found"
         next(err)
     }
 })
