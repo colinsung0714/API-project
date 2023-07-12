@@ -120,7 +120,7 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
             res.json(bookingBody)
         } else {
             const err = new Error()
-            err.status = 401
+            err.status = 403
             err.message = 'Booking must belong to the current user'
             next(err)
         }
@@ -154,7 +154,7 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
             }
         } else {
             const err = new Error()
-            err.status = 401
+            err.status = 403
             err.message = 'Booking must belong to the current user or the Spot must belong to the current user'
             next(err)
         }

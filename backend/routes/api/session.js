@@ -53,7 +53,7 @@ router.get(
   
       if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
         const err = new Error("Invalid credentials");
-        err.status = 401;
+        err.status = 403;
         return next(err);
       }
   
