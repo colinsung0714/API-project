@@ -2,8 +2,9 @@ const express = require('express')
 const router = express.Router();
 const { Spot, sequelize, Review, SpotImage, User, Booking, ReviewImage } = require('../../db/models')
 const { requireAuth } = require('../../utils/auth')
-const { check } = require('express-validator');
+const { check, query } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const { Op } = require("sequelize");
 const validateSpot = [
     check('address')
         .exists({ checkFalsy: true })
@@ -73,7 +74,52 @@ const validateBooking = [
         .withMessage("endDate cannot be on or before startDate"),
         handleValidationErrors
 ]
-
+const validateQuery = [
+    query('page')
+      .optional()
+      .isInt({ min: 1, max: 10 })
+      .withMessage('Page must be greater than or equal to 1'),
+    query('size')
+      .optional()
+      .isInt({ min: 1, max: 20 })
+      .withMessage('Size must be greater than or equal to 1'),
+    query('minLat')
+      .optional()
+      .isDecimal()
+      .withMessage('Minimum latitude is invalid'),
+    query('maxLat')
+      .optional()
+      .isDecimal()
+      .withMessage('Maximum latitude is invalid'),
+    query('minLng')
+      .optional()
+      .isDecimal()
+      .withMessage('Minimum longitude is invalid'),
+    query('maxLng')
+      .optional()
+      .isDecimal()
+      .withMessage('Maximum longitude is invalid'),
+      query('minPrice')
+      .optional()
+      .isDecimal().withMessage("Minimum price must be greater than or equal to 0")
+      .custom((value) => {
+          if (value < 0) {
+              return false
+          }
+          return true
+      }).withMessage("Minimum price must be greater than or equal to 0"),
+    query('maxPrice')
+      .optional()
+      .isDecimal().withMessage("Maximum price must be greater than or equal to 0")
+      .custom((value) => {
+          if (value < 0) {
+              return false
+          }
+          return true
+      }).withMessage("Maximum price must be greater than or equal to 0"),
+  
+    handleValidationErrors
+]
 router.get('/current', requireAuth, async (req, res) => {
     const allSpots = await Spot.findAll({
         where: {
@@ -234,8 +280,27 @@ router.get('/:spotId', async (req, res, next) => {
     res.json(oneSpot)
 })
 
-router.get('/', async (req, res) => {
-    const allSpots = await Spot.findAll({})
+router.get('/',validateQuery,async (req, res) => {
+    let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
+    if(!page) page = 1
+    if(!size) size = 20
+    const pagenation = {}
+    if(page >= 1 && size >= 1) {
+        pagenation.limit = size
+        pagenation.offset = (page - 1)*size
+    }
+    const where = {}
+    if(minLat) where.lat = { [Op.gte] : minLat }
+    if(maxLat) where.lat = { [Op.lte] : maxLat }
+    if(minLng) where.lng = { [Op.gte] : minLng }
+    if(maxLng) where.lng = { [Op.lte] : maxLng }
+    if(minPrice) where.price = { [Op.gte] : minPrice }
+    if(maxPrice) where.price = { [Op.lte] : maxPrice }
+
+    const allSpots = await Spot.findAll({
+        where,
+        ...pagenation
+    })
     const Spots = [];
     for (let spot of allSpots) {
         let avgRating = await spot.getReviews({
@@ -261,8 +326,9 @@ router.get('/', async (req, res) => {
         Spots.push(spot);
     }
 
-
-    res.json({ Spots })
+    page = Number(page)
+    size = Number(size)
+    res.json({ Spots,page,size })
 })
 
 router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, next) => {
