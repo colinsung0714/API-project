@@ -105,7 +105,7 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
                 if (currentDate > bookingEndDate) {
                     const err = new Error()
                     err.status = 403
-                    err.message="Past bookings can't be modified"
+                    err.message = "Past bookings can't be modified"
                     next(err)
                 }
             }
@@ -122,6 +122,40 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
             const err = new Error()
             err.status = 401
             err.message = 'Booking must belong to the current user'
+            next(err)
+        }
+    } else {
+        const err = new Error();
+        err.status = 404
+        err.message = "Booking couldn't be found"
+        next(err)
+    }
+})
+
+router.delete('/:bookingId', requireAuth, async (req, res, next) => {
+    const currentUser = await User.findByPk(req.user.id)
+    const booking = await Booking.findByPk(req.params.bookingId)
+    
+    if (booking) {
+        const spot = await booking.getSpot()
+        if (booking.userId === currentUser.id || spot.ownerId === currentUser.id) {
+            const currentDate = new Date().getTime()
+            const bookingStartDate = new Date(booking.startDate).getTime()
+            if (currentDate > bookingStartDate) {
+                const err = new Error()
+                err.status = 403
+                err.message = "Bookings that have been started can't be deleted"
+                next(err)
+            } else {
+                await booking.destroy()
+                res.json({
+                    message: "Successfully deleted"
+                })
+            }
+        } else {
+            const err = new Error()
+            err.status = 401
+            err.message = 'Booking must belong to the current user or the Spot must belong to the current user'
             next(err)
         }
     } else {
