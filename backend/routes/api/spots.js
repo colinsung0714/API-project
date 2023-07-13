@@ -446,7 +446,7 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
             newReview.stars = Number(newReview.stars)
             newReview.createdAt = newReview.createdAt.toISOString().replace('T', ' ').substring(0, 19)
             newReview.updatedAt = newReview.updatedAt.toISOString().replace('T', ' ').substring(0, 19)
-            res.json(newReview)
+            res.status(201).json(newReview)
         }
     } else {
         const err = new Error();
