@@ -1,0 +1,16 @@
+form {
+    display: flex;
+    justify-content: center;
+    gap:20px;
+}
+
+label {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: blue;
+}
+
+h1 {
+    text-align: center;
+    color: blue;
+}
+
