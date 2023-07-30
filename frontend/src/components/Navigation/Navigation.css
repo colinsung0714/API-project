@@ -22,23 +22,89 @@ header {
     font-family: 'Nunito', sans-serif;
 }
 
-#user-button button{
-    align-content: center;
-    width: 70px;
-    height: 50px;
+.profile-dropdown button{
+    display: flex;
+    font-size: 14pt;
     cursor: pointer;
-    border-radius: 20px;
+    font-family: 'Nunito', sans-serif;
     background-color: white;
-    border: solid lightgray;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    border: none;
 }
 
 .profile-dropdown {
     position: absolute;
-    top: 20px;
-    right: 10px;
+    top: 40px;
+    right: 20px;
     font-family: 'Nunito', sans-serif;
+    font-size: 14pt;
+    width: 170px;
+    background-color: white;
+    border: solid 1px black;
+    box-shadow: 2px 2px 2px black;
+    padding: 10px;
+    text-align: start;
+    justify-content: baseline;
+    
 }
 
 #user-button {
+    display: flex;
     position: relative;
+    justify-content: center;
+    align-content: center;
+}
+
+.profile-dropdown.login-signup {
+   
+    padding-right: 70px;
+}
+
+#user-profile-button {
+    display: flex;
+    cursor: pointer;
+    border:solid 2px #CCCCCC;
+    width: 60px;
+    height: 40px;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+  
+}
+
+#user-profile-button i{
+    box-sizing: content-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#sign-up-user {
+    display: flex;
+    width: fit-content;
+}
+
+#log-in-user {
+    display: flex;
+    width: fit-content;
+}
+
+#user-manage-spot-header {
+  
+    border-top: solid 2px black;
+    border-bottom: solid 2px black;
+}
+
+#user-logout-header-button {
+    border: solid 2px black;
+    font-family: 'Nunito', sans-serif;
+    background-color: #999999;
+    color: white;
+    margin: 1px auto;
+    width: 90px;
+    border-radius: 10px;
 }
