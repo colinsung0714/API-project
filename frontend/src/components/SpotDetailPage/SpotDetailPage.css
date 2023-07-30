@@ -1,0 +1,69 @@
+.spot-detail-review-container {
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+.spot-detail-contact-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-family: 'Nunito', sans-serif;
+}
+
+.spot-detail-name {
+    font-size: 18pt;
+    font-weight: bold;
+    margin-top: 10px
+}
+
+.spot-detail-address {
+    font-size: 14pt;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.spot-detail-image-container {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    height: 300px;
+}
+
+.spot-detail-img-main {
+    display: flex;
+    width: 100%;
+}
+
+#spot-detail-main-img {
+    height: 100%;
+    width: 100%;
+    border-radius: 20px;
+    border: solid black 2px;
+    cursor: pointer;
+}
+
+.spot-detail-img-rest {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    justify-items: center;
+    align-items: center;
+    gap: 10px;
+}
+
+#spot-detail-rest-img {
+    height: 100%;
+    width: 100%;
+    border-radius: 20px;
+    border: solid black 2px;
+    cursor: pointer;
+}
+
+.spot-detail-description-container {
+    display: flex;
+    margin: 10px 0;
+    justify-content: space-between;
+    gap: 10px;
+}

@@ -37,7 +37,27 @@ module.exports = {
         spotId: 3,
         url: 'https://example.com/images/spot3.jpg',
         preview: true
+      },
+      {
+        spotId: 1,
+        url: 'https://example.com/images/spot4.jpg',
+        preview: true
+      },
+      {
+        spotId: 1,
+        url: 'https://example.com/images/spot5.jpg',
+        preview: true
+      },
+      {
+        spotId: 1,
+        url: 'https://example.com/images/spot6.jpg',
+        preview: true
+      },    {
+        spotId: 1,
+        url: 'https://example.com/images/spot7.jpg',
+        preview: true
       }
+
     ], { validate: true });
   },
 
