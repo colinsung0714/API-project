@@ -42,7 +42,7 @@ const ReviewList = ({ review }) => {
         return year[0]
         }
     }
-    if(!review) return null
+    if(!Object.values(review).length) return null
     return (
         <div className="firstname-month-comment-list-container">
             <div id="review-list-firstName">{review.User && review.User.firstName}</div>
@@ -88,7 +88,7 @@ const SpotReviews = ({ spotId, spot }) => {
             </div>
         )
     }
-    if (!reviews) return null
+    if (!reviews.length) return null
     return (
         <div className="spot-review-container">
             <div>

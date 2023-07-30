@@ -12,7 +12,8 @@ const SpotDetailPage = () => {
         dispatch(fetchGetSpotDetail(spotId))
     }, [dispatch, spotId])
     const spot = useSelector(state => state.spots.singleSpot)
-    if (!spot) return null
+    
+    if (!Object.values(spot).length) return null
     return (
         <div className="spot-detail-review-container">
             <div className="spot-detail-container">
