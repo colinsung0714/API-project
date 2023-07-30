@@ -9,6 +9,7 @@ const SpotContainer = ({ spot }) => {
     const clickImg = () => {
         history.push(`/spots/${spot.id}`)
     }
+    
     return (
         <div className="spot-container">
             <div className="spot-image">
@@ -18,7 +19,7 @@ const SpotContainer = ({ spot }) => {
             <div className="spot-info-container">
                 <div className="city-state-star-container">
                     <div className="city-state">{spot.city}, {spot.state}</div>
-                    <div className="star"><i className="fa-solid fa-star"></i> {spot.avgRating}</div>
+                    <div className="star"><i className="fa-solid fa-star"></i> {Number.parseFloat(spot.avgRating).toFixed(1)}</div>
                 </div>
                 <div className="price-container">
                     {spot.price ? `$${spot.price} night` : 'New'}

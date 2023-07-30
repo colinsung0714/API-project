@@ -1,8 +1,10 @@
-import React, { useDeferredValue, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchGetSpotDetail } from '../../store/spots'
-import './SpotDetailPage.css'
+import SpotReviews from "./SpotReviews";
+import ViewSummaryInfo from "./ViewSummaryInfo";
+import './SpotDetailPage.css';
 const SpotDetailPage = () => {
     const { spotId } = useParams()
     const dispatch = useDispatch()
@@ -29,7 +31,7 @@ const SpotDetailPage = () => {
                     <div className="spot-detail-img-rest">
                         {spot.SpotImages && spot.SpotImages[1] && spot.SpotImages.map((spotImg, i) => {
                             if (i === 0) return null
-                            return <img id="spot-detail-rest-img" key={spotImg.id} src={spotImg.url} alt={spotImg.url}/>
+                            return <img id="spot-detail-rest-img" key={spotImg.id} src={spotImg.url} alt={spotImg.url} />
                         })}
                     </div>
                 </div>
@@ -41,14 +43,15 @@ const SpotDetailPage = () => {
                     <div className="spot-detail-description-right">
                         <div className="reserve-button-container">
                             <div className="detail-star-reviews">
-                                <div id="detail-price">{`$${spot.price} night`}</div>
-                                <div id='detail-star-review'><i className="fa-solid fa-star"></i> {spot.avgStarRating}<div>* {spot.numReviews} reviews</div></div>
+                                <div id="detail-price"><div>${spot.price && spot.price}</div><div>night</div></div>
+                                <ViewSummaryInfo spot={spot}/>
                             </div>
-                            <button id="reserve-button">Button</button>
+                            <button id="reserve-button" onClick={()=>alert("Feature coming soon")}>Button</button>
                         </div>
                     </div>
                 </div>
             </div>
+            <SpotReviews spotId={spotId} spot={spot}/>
         </div>
     )
 }

@@ -1,0 +1,41 @@
+#be-first-msg {
+    font-size: 18pt;
+    font-weight: bold;
+    font-family: 'Nunito', sans-serif;
+    padding: 10px;
+}
+
+.nonvisible {
+    display:none
+}
+
+#post-review-button {
+    font-family: 'Nunito', sans-serif;
+    background-color:darkgray ;
+    text-align: center;
+    cursor: pointer;
+    font-size: 14pt;
+    color: white;
+    box-shadow: 2px 2px 2px black;
+    width: fit-content;
+    padding: 5px;
+}
+
+.spot-review-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+}
+
+.firstname-month-comment-list-container {
+    font-family: 'Nunito', sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap:5px;
+    margin-bottom: 60px;
+}
+
+#review-list-month {
+    color: #CCCCCC
+}

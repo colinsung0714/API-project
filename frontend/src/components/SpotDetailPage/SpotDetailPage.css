@@ -39,7 +39,7 @@
 #spot-detail-main-img {
     height: 100%;
     width: 100%;
-    border-radius: 20px;
+
     border: solid black 2px;
     cursor: pointer;
 }
@@ -56,7 +56,7 @@
 #spot-detail-rest-img {
     height: 100%;
     width: 100%;
-    border-radius: 20px;
+   
     border: solid black 2px;
     cursor: pointer;
 }
@@ -66,4 +66,104 @@
     margin: 10px 0;
     justify-content: space-between;
     gap: 10px;
+    border-bottom: solid 2px black;
+    height: 250px;
+}
+
+.spot-detail-description-left {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.spot-detail-description-right {
+    display: flex;
+    width: 600px;
+    height: 150px;
+   
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.reserve-button-container {
+    border: solid 2px black;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.detail-star-reviews {
+    display: flex;
+    justify-content: space-between;
+  
+   
+}
+
+#detail-star-review {
+    display: flex;
+    padding: 10px;
+    font-size: 14pt;
+    font-family: 'Nunito', sans-serif;
+    gap: 10px;
+    width: 100%;
+}
+
+#detail-star-review :first-child{
+    display: flex;
+    align-self: flex-end;
+}
+
+#detail-star-review .fa-solid.fa-star{
+    align-self: center;
+}
+
+#detail-star-review :last-child{
+    display: flex;
+    align-self: flex-end;
+}
+
+#detail-price {
+    display: flex;
+    justify-content: center;
+    font-family: 'Nunito', sans-serif;
+    align-items: center;
+    gap: 5px;
+    padding: 10px;
+}
+
+#detail-price :first-child{
+    font-size: 18pt;
+    font-weight: bold;
+}
+
+#detail-price :last-child{
+    align-self: flex-end;
+    font-size: 14pt;
+}
+
+#reserve-button {
+    background-color: red;
+    cursor: pointer;
+    font-size: 14pt;
+    text-align: center;
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    margin: 10px;
+    box-shadow: 4px 4px 2px black;
+}
+
+#hostedby {
+    font-family: 'Nunito', sans-serif;
+    font-size: 18pt;
+    font-weight: bold;
+}
+
+#spot-description {
+    font-family: 'Nunito', sans-serif;
+    font-size: 14pt;
 }

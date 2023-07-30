@@ -38,7 +38,7 @@ export const fetchGetSpotDetail = (spotId) => async dispatch => {
     }
 }
 
-export const initialState = { allSpots: { optionalOrderedList: [] }, singleSpot: {} };
+const initialState = { allSpots: { optionalOrderedList: [] }, singleSpot: {} };
 
 const spotsReducer = (state = initialState, action) => {
     let newState;
