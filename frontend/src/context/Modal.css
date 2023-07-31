@@ -1,12 +1,11 @@
 #modal {
     position: fixed;
-    top: 0;
+    top: 100px;
     right: 0;
     left: 0;
     bottom: 0;
     display: flex;
     justify-content: center;
-    align-items: center;
 }
 
 #modal-background {
@@ -20,5 +19,15 @@
 
 #modal-content {
     position: absolute;
+    display: flex;
     background-color: white;
+    border-radius: 10px;
+    margin: 20px;
+    flex-direction: column;
+    font-family: 'Nunito', sans-serif;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    
 }
+

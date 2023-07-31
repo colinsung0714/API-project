@@ -1,1 +1,44 @@
+.login-input-form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+}
 
+.login-input-form-container input {
+    border: solid 2px black;
+    font-size: 14pt;
+    width: 400px;
+}
+
+.login-input-form-container button {
+    font-family: 'Nunito', sans-serif;
+    font-size: 14pt;
+    background-color: red;
+    color: white;
+    height: 60px;
+    border:solid  2px black;
+    box-shadow: 2px 2px 2px black;
+    cursor: pointer;
+}
+
+.login-input-form-container button[disabled] {
+    background-color: white;
+    color: #CCCCCC;
+    border:solid  2px #CCCCCC;
+    box-shadow: 2px 2px 2px #CCCCCC;
+}
+
+.login-input-form-container p {
+    color: red;
+}
+
+#demo-user-button {
+    color: #00525E;
+    background-color: white;
+    text-decoration: underline;
+    border: none;
+    box-shadow: none;
+    cursor: pointer;
+}

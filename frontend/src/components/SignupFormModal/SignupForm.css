@@ -1,0 +1,51 @@
+.sign-up-form-container {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14pt;
+    width: 500px;
+}
+
+.sign-up-form-container h1 {
+    text-align: center;
+}
+
+.sign-up-form-container form{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14pt;
+} 
+
+.sign-up-form-container input {
+    font-family: 'Nunito', sans-serif;
+    font-size: 14pt;
+    border: solid 2px black;
+}
+
+.sign-up-form-container p{
+    color: red;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14pt;
+    margin: 0%;
+}
+
+.sign-up-form-container button {
+    font-family: 'Nunito', sans-serif;
+    font-size: 14pt;
+    background-color: red;
+    color: white;
+    height: 60px;
+    border:solid  2px black;
+    box-shadow: 2px 2px 2px black;
+    cursor: pointer;
+}
+
+.sign-up-form-container button[disabled] {
+    background-color: white;
+    color: #CCCCCC;
+    border:solid  2px #CCCCCC;
+    box-shadow: 2px 2px 2px #CCCCCC;
+}
