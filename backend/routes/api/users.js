@@ -57,7 +57,7 @@ router.post(
       err.status = 500
       err.message = "User already exists"
       err.errors = {
-        email: "User with that username already exists"
+        username: "User with that username already exists"
       }
       next(err)
     }
