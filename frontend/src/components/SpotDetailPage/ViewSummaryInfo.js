@@ -2,7 +2,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 const ViewSummaryInfo = ({ spot }) => {
     const reviews = useSelector(state => state.reviews.spot)
-
     if (!Object.values(reviews).length) return (
 
         <div id='detail-star-review'>
@@ -15,9 +14,9 @@ const ViewSummaryInfo = ({ spot }) => {
         <div id='detail-star-review'>
             <div>
                 <i className="fa-solid fa-star"></i>
-                {' '}{spot.avgStarRating && Number.parseFloat(spot.avgStarRating).toFixed(1)}
+                {' '}{spot.avgStarRating === 0 ? 'New' : Number.parseFloat(spot.avgStarRating).toFixed(1)}
             </div>
-            <div>{spot.numReviews && ` • ${spot.numReviews}`} Review</div>
+            <div>{spot.numReviews === 0 ? '' : ` • ${spot.numReviews} Review`} </div>
         </div>
     )
     if(spot.numReviews === 0) return (
@@ -29,13 +28,23 @@ const ViewSummaryInfo = ({ spot }) => {
         <div></div>
     </div>
     )
+    let avgStarValue =0
+    let numberReview =0
+    if(Object.values(reviews).length) {
+        numberReview = Object.values(reviews).length
+        for(let review of Object.values(reviews)) {
+
+            avgStarValue += review.stars
+        }
+    }
+
     return (
         <div id='detail-star-review'>
             <div>
                 <i className="fa-solid fa-star"></i>
-                {' '}{spot.avgStarRating && Number.parseFloat(spot.avgStarRating).toFixed(1)}
+                {' '}{Object.values(reviews).length && Number.parseFloat(avgStarValue/numberReview).toFixed(1)}
             </div>
-            <div>{spot.numReviews && ` • ${spot.numReviews}`} Review</div>
+            <div>{Object.values(reviews).length && ` • ${numberReview}`} Reviews</div>
         </div>
     )
 }
