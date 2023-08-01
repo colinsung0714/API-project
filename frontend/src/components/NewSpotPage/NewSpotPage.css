@@ -1,5 +1,270 @@
+.new-spot-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Nunito', sans-serif;
+}
+
+
+
+.place-image-container {
+    width: 560px;
+}
+
+.place-image-container p {
+    color: red;
+}
+.place-image-container h1 {
+    font-size: 24pt;
+    font-weight: bold;
+}
+
+.new-spot-container form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.new-from-subheading {
+    font-size: 18pt;
+    font-weight: bold;
+}
+
+.new-form-content {
+    font-size: 14pt;
+}
+
 #describe-input {
     display: flex;
     text-decoration: none;
     border: solid 2px black;
+    width: 100%;
+    height: 150px;
+}
+
+.country-input-container {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10px;
+}
+
+.country-label-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    height: 30px;
+}
+
+#country-input {
+    width: 100%;
+    height: 14pt;
+    border: solid 2px black;
+}
+
+.address-error-conainer {
+    display: flex;
+    align-items: center;
+    height: 30px;
+    gap: 10px;
+}
+
+.address-input-container {
+    display: flex;
+    flex-direction: column;
+}
+
+#address-input {
+    width: 100%;
+    height: 14pt;
+    border: solid 2px black;
+}
+
+.city-state-container {
+    display: flex;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.city-container {
+   flex: 1;
+}
+
+.city-error-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 30px;
+
+}
+
+.city-container input {
+    width: 97%;
+    height: 14pt;
+    border: solid 2px black;
+}
+
+.space-dot {
+    display: flex;
+    flex: 0.1;
+    padding-top: 39px;
+}
+
+.state-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.state-error-container{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 30px;
+}
+
+.state-container input {
+    width: 100%;
+    height: 14pt;
+    border: solid 2px black;
+}
+
+.lat-lng-container {
+    display: flex;
+    margin-top: 10px;
+    width: 100%;
+    border-bottom: solid 2px black;
+    padding-bottom: 20px;
+}
+
+.lat-error-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 30px;
+}
+
+.lat-container {
+    flex: 1;
+}
+
+.lat-container input {
+    width: 97%;
+    height: 14pt;
+    border: solid 2px black;
+}
+
+.space-dot-one {
+    display: flex;
+    flex: 0.1;
+    padding-top: 39px;
+}
+
+.lng-error-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 30px;
+}
+
+.lng-container input {
+    width: 97%;
+    height: 14pt;
+    border: solid 2px black;
+}
+
+.describe-container {
+    margin-top: 20px;
+}
+
+.describe-container p {
+    margin-top: 5px;
+}
+
+.description-error-container {
+    border-bottom: solid 2px black;
+    padding-bottom: 20px;
+}
+
+.spot-name-container {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-bottom: solid 2px black;
+    padding-bottom: 10px;
+}
+
+.title-error-container {
+    margin-top: 10px;
+    width: 100%;
+  
+}
+
+.title-error-container input {
+    width: 100%;
+    height: 14pt;
+    border: solid 2px black;
+} 
+
+.spot-price-container {
+    margin-top: 10px;
+    border-bottom: solid 2px black;
+}
+
+.price-error-container {
+    margin-top: 10px;
+    height: 60px;
+    margin-bottom: 20px;
+}
+
+.icon-price-container {
+    display: flex;
+    gap: 5px;
+}
+
+.img-url-container {
+    margin-top: 10px;
+    border-bottom: solid 2px black;
+    margin-bottom: 20px;
+    padding-bottom: 30px;
+}
+
+
+.icon-price-container p{
+    display: flex;
+    margin-top: 0px;
+}
+
+
+.icon-price-container input {
+    width: 100%;
+    height: 14pt;
+    border: solid 2px black;
+}
+
+.img-url-container input{
+    margin-top: 5px;
+    height: 14pt;
+    border: solid 2px black;
+    width: 100%;
+}
+
+.img-url-container p {
+    margin: 0;
+}
+
+#new-spot-submit {
+    margin-top: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14pt;
+    background-color: red;
+    color: white;
+    height: 60px;
+    border:solid  2px black;
+    box-shadow: 2px 2px 2px black;
+    cursor: pointer;
+    width: 150px;
+    height: 50px;
+    margin-bottom: 30px;
 }

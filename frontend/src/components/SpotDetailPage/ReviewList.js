@@ -1,7 +1,8 @@
 import React from "react";
 import './SpotReviews.css'
 
-const ReviewList = ({ review }) => {
+
+const ReviewList = ({ review, currentUser }) => {
     const getMonth = (review) => {
         const month = new Date(review.createdAt)
         switch (month.getMonth()) {
@@ -42,9 +43,9 @@ const ReviewList = ({ review }) => {
     if(!Object.values(review).length) return null
     return (
         <div key={review.id} className="firstname-month-comment-list-container">
-            <div id="review-list-firstName">{review.User && review.User.firstName}</div>
+            <div id="review-list-firstName">{ review.User ? review.User.firstName : currentUser.firstName}</div>
             <div id='review-list-month'>{`${getMonth(review)} ${getYear(review)}`}</div>
-            <div id='review-list-comment'>{review.User && review.review}</div>
+            <div id='review-list-comment'>{ review.review}</div>
         </div>
     )
 }

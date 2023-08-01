@@ -20,6 +20,8 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14pt;
 }
 
 .spot-info-container {
