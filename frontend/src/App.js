@@ -6,6 +6,7 @@ import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
 import SpotDetailPage from "./components/SpotDetailPage";
 import NewSpotPage from "./components/NewSpotPage";
+import ManageSpotPage from "./components/ManageSpotPage";
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -26,6 +27,9 @@ function App() {
           </Route>
           <Route path='/spots/:spotId'>
             <SpotDetailPage />
+          </Route>
+          <Route path='/current'>
+              <ManageSpotPage/>
           </Route>
         </Switch>}
     </>

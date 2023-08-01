@@ -1,7 +1,9 @@
 import React, { useRef, useState } from "react";
 import { useHistory } from 'react-router-dom'
 import './SpotContainer.css'
-const SpotContainer = ({ spot }) => {
+import '../ManageSpotPage/ManageSpotPage.css'
+
+const SpotContainer = ({ spot, formType }) => {
     const [tooltip, setTooltip] = useState(false)
     const history = useHistory()
     const ref = useRef()
@@ -10,8 +12,16 @@ const SpotContainer = ({ spot }) => {
         history.push(`/spots/${spot.id}`)
     }
      
-    
+    const gotoUpdate = () => {
+      
+        const dataInfo = { formType:'update', spotId:spot.id}
+        history.push({
+            pathname: '/spots/new',
+            state: dataInfo,
+          });
+    }
     return (
+        
         <div className="spot-container">
             <div className="spot-image">
                 <img ref={ref} onMouseEnter={()=>setTooltip(true)} onMouseLeave={()=>setTooltip(false)} onClick={clickImg} id='spot-img' src={`${spot.previewImage}`}  alt={spot.previewImage}/>
@@ -25,8 +35,14 @@ const SpotContainer = ({ spot }) => {
                 <div className="price-container">
                     {spot.price ? `$${spot.price} night` : 'New'}
                 </div>
+            
             </div>
+            {formType === 'owner' ? <div className="update-delete-spot-button-container">
+                    <button onClick={gotoUpdate} className="owner-update-button">Update</button>
+                    <button className="owner-delete-button">Delete</button>
+                </div> :<></>}
         </div>
+        
     )
 }
 

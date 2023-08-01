@@ -11,7 +11,7 @@ const ViewSummaryInfo = ({ spot }) => {
             </div>
         </div>
     )
-    console.log(reviews)
+  
     if (Object.values(reviews).length === 1) return (
         <div id='detail-star-review'>
             <div>

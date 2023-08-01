@@ -47,7 +47,8 @@ export const fetchGetSpotDetail = (spotId) => async dispatch => {
 
     if (res.ok) {
 
-        dispatch(getSpotDetail(data))
+       const response = dispatch(getSpotDetail(data))
+       return response
     } else {
 
         throw data

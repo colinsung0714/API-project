@@ -1,0 +1,17 @@
+.update-delete-spot-button-container {
+    display: flex;
+    gap: 10px;
+    justify-self: flex-start;
+    align-self: flex-start;
+    
+}
+
+.update-delete-spot-button-container button {
+    font-family: 'Nunito', sans-serif;
+    font-size: 14pt;
+    cursor: pointer;
+    background-color: #999999;
+    color: white;
+    border: solid 2px black;
+    box-shadow: 2px 2px 2px black;
+}
