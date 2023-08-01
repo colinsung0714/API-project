@@ -64,15 +64,15 @@ export const fethPostNewSpot = (spot) => async dispatch => {
         },
         body:JSON.stringify(spot)
     })
-    const data = await res.json()
+   
 
     if (res.ok) {
-
+        const data = await res.json()
         dispatch(postNewSpot(data))
         return data
-    } else {
+    } else { 
 
-        throw data
+        throw res
     }
 }
 

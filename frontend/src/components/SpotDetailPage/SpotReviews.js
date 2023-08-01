@@ -65,7 +65,7 @@ const SpotReviews = ({ spotId, spot }) => {
                     if (timeA.getTime() > timeB.getTime()) return -1
                     if (timeA.getTime() < timeB.getTime()) return 1
                     return 0;
-                }).map(review => <ReviewList key={review.id} review={review} currentUser={currentUser} />)}
+                }).map(review =><div key={review.id} > <ReviewList review={review} currentUser={currentUser} /></div>)}
             </div>
         </div>
     )
