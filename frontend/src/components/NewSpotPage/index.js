@@ -39,7 +39,7 @@ const NewSpotPage = () => {
         }
         return false
     }
-
+    console.log(description.length)
     const handleSubmit = (e) => {
         e.preventDefault()
         const error = {}
@@ -71,7 +71,7 @@ const NewSpotPage = () => {
             description,
             price
         }
-
+    
         const imgArr = [previewImg && previewImg, imgurlOne && imgurlOne, imgurlTwo && imgurlTwo, imgurlThree && imgurlThree, imgurlFour && imgurlFour]
         if (!Object.values(error).length) {
             dispatch(fethPostNewSpot(newSpot)).then(spot => {
@@ -90,12 +90,11 @@ const NewSpotPage = () => {
                     }
                 }
                 setErrors({})
-                return history.push(`/spots/${spotId}`)
+                history.push(`/spots/${spotId}`)
 
             }).catch(res => {
-
-                if (res && res.message) {
-                    setErrors(res.message);
+                if (res) {
+                    setErrors(res);
                 }
             })
         } else {

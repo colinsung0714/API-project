@@ -6,33 +6,39 @@ const ViewSummaryInfo = ({ spot }) => {
 
         <div id='detail-star-review'>
             <div>
+                <i className="fa-solid fa-star"></i>
                 <div>New</div>
             </div>
         </div>
     )
-    if(Object.values(reviews).length===1) return (
+    console.log(reviews)
+    if (Object.values(reviews).length === 1) return (
         <div id='detail-star-review'>
             <div>
                 <i className="fa-solid fa-star"></i>
-                {' '}{spot.avgStarRating === 0 ? 'New' : Number.parseFloat(spot.avgStarRating).toFixed(1)}
+                {/* {' '}{spot.avgStarRating === 0 ? 'New' : Number.parseFloat(spot.avgStarRating).toFixed(1)} */}
+                {Number.parseFloat(Object.values(reviews)[0].stars).toFixed(1)}
             </div>
-            <div>{spot.numReviews === 0 ? '' : ` • ${spot.numReviews} Review`} </div>
+            <div>
+                {/* {spot.numReviews === 0 ? '' : ` • ${spot.numReviews} Review`} */}
+                {` • ${Object.values(reviews).length} Review`}
+            </div>
         </div>
     )
-    if(spot.numReviews === 0) return (
+    if (spot.numReviews === 0) return (
         <div id='detail-star-review'>
-        <div>
-            <i className="fa-solid fa-star"></i>
-            {' '}{spot.avgStarRating && Number.parseFloat(spot.avgStarRating).toFixed(1)}
+            <div>
+                <i className="fa-solid fa-star"></i>
+                {' '}{spot.avgStarRating && Number.parseFloat(spot.avgStarRating).toFixed(1)}
+            </div>
+            <div></div>
         </div>
-        <div></div>
-    </div>
     )
-    let avgStarValue =0
-    let numberReview =0
-    if(Object.values(reviews).length) {
+    let avgStarValue = 0
+    let numberReview = 0
+    if (Object.values(reviews).length) {
         numberReview = Object.values(reviews).length
-        for(let review of Object.values(reviews)) {
+        for (let review of Object.values(reviews)) {
 
             avgStarValue += review.stars
         }
@@ -42,7 +48,7 @@ const ViewSummaryInfo = ({ spot }) => {
         <div id='detail-star-review'>
             <div>
                 <i className="fa-solid fa-star"></i>
-                {' '}{Object.values(reviews).length && Number.parseFloat(avgStarValue/numberReview).toFixed(1)}
+                {' '}{Object.values(reviews).length && Number.parseFloat(avgStarValue / numberReview).toFixed(1)}
             </div>
             <div>{Object.values(reviews).length && ` • ${numberReview}`} Reviews</div>
         </div>
