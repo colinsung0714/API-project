@@ -1,9 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom'
-import { fethPostNewSpot, fetchPostNewImage } from '../../store/spots'
+import { useHistory, useLocation } from 'react-router-dom'
+import { fethPostNewSpot, fetchPostNewImage, fetchGetSpotDetail } from '../../store/spots'
 import './NewSpotPage.css'
+
 const NewSpotPage = () => {
+    
+    const dispatch = useDispatch()
+    const history = useHistory()
+    const location = useLocation()
+    const formType = location.state?.formType || 'create'
+    const spotId = location.state?.spotId
+   
+    useEffect(()=>{
+        if(formType==='update') {
+          dispatch(fetchGetSpotDetail(spotId)).then(res=>{
+            const [img1, img2, img3, img4, img5] = res.spot.SpotImages
+            setPrice(res.spot.price)
+            setCountry(res.spot.country)
+            setAddress(res.spot.address)
+            setCity(res.spot.city)
+            setState(res.spot.state)
+            setLatitude(res.spot.lat)
+            setLongitude(res.spot.lng)
+            setDescription(res.spot.description)
+            setTitle(res.spot.name)
+            setPreviewImg(img1?.url ? img1.url : '')
+            setImgurlOne(img2?.url ? img2.url : '')
+            setImgurlTwo(img3?.url ? img3.url: '')
+            setImgurlThree(img4?.url? img4.url : '')
+            setImgurlFour(img5?.url? img5.url :'')
+        })
+        }
+        },[dispatch, formType, spotId])
     const [country, setCountry] = useState('')
     const [address, setAddress] = useState('')
     const [city, setCity] = useState('')
@@ -19,8 +48,10 @@ const NewSpotPage = () => {
     const [imgurlThree, setImgurlThree] = useState('')
     const [imgurlFour, setImgurlFour] = useState('')
     const [errors, setErrors] = useState({})
-    const dispatch = useDispatch()
-    const history = useHistory()
+   
+
+  
+    
     const dispatchImage = async (url, spotId) => {
         return await dispatch(fetchPostNewImage(url, spotId))
     }
@@ -39,7 +70,7 @@ const NewSpotPage = () => {
         }
         return false
     }
-    console.log(description.length)
+
     const handleSubmit = (e) => {
         e.preventDefault()
         const error = {}
@@ -71,7 +102,7 @@ const NewSpotPage = () => {
             description,
             price
         }
-    
+
         const imgArr = [previewImg && previewImg, imgurlOne && imgurlOne, imgurlTwo && imgurlTwo, imgurlThree && imgurlThree, imgurlFour && imgurlFour]
         if (!Object.values(error).length) {
             dispatch(fethPostNewSpot(newSpot)).then(spot => {
@@ -109,7 +140,7 @@ const NewSpotPage = () => {
 
                 <div className="place-image-container">
                     <h1>
-                        Create a New Spot
+                        {formType === 'update' ? 'Update your Spot' : 'Create a New Spot'}
                     </h1>
                     <div className="new-from-subheading">
                         Where's Your Place Located?
@@ -191,8 +222,8 @@ const NewSpotPage = () => {
                             <div className="new-form-content">Competitive pricing can help your listing stand out and rank higher in search results.</div>
                             <div className="price-error-container">
                                 <div className="icon-price-container">
-                                <label htmlFor="price"><i className="fa-solid fa-dollar-sign"></i></label>
-                                <input type='number' name="price" placeholder="Price per night (USD)" value={price} onChange={(e) => setPrice(e.target.value)} />
+                                    <label htmlFor="price"><i className="fa-solid fa-dollar-sign"></i></label>
+                                    <input type='number' name="price" placeholder="Price per night (USD)" value={price} onChange={(e) => setPrice(e.target.value)} />
                                 </div>
                                 <p>{errors.price && errors.price}</p>
                             </div>

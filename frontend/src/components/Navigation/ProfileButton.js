@@ -49,7 +49,10 @@ function ProfileButton({ user }) {
           <>
             <div id='hello-user-header'>Hello, {user.username}</div>
             <div id='user-email-header'>{user.email}</div>
-            <div id='user-manage-spot-header'>Manage Spots</div>
+            <div id='user-manage-spot-header' onClick={()=>{
+              history.push('/current')
+              setShowMenu(false)
+              }}>Manage Spots</div>
             <div>
               <button id='user-logout-header-button' onClick={logout}>Log Out</button>
             </div>
