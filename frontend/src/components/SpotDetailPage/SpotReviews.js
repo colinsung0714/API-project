@@ -36,7 +36,7 @@ const SpotReviews = ({ spotId, spot }) => {
         }
     }
 
-    if (!reviews.length && currentUser.id !== spot.ownerId) {
+    if (!reviews.length && currentUser?.id !== spot.ownerId) {
         return (
             <div>
                 <div>
@@ -50,7 +50,7 @@ const SpotReviews = ({ spotId, spot }) => {
             </div>
         )
     }
-    if (!reviews.length) return null
+
     return (
         <div className="spot-review-container">
             <div>
