@@ -12,7 +12,7 @@ const SpotDetailPage = () => {
         dispatch(fetchGetSpotDetail(spotId))
     }, [dispatch, spotId])
     const spot = useSelector(state => state.spots.singleSpot)
-    
+   
     if (!Object.values(spot).length) return null
     return (
         <div className="spot-detail-review-container">
@@ -27,7 +27,7 @@ const SpotDetailPage = () => {
                 </div>
                 <div className="spot-detail-image-container">
                     <div className="spot-detail-img-main">
-                        <img id='spot-detail-main-img' src={spot.SpotImages && spot.SpotImages[0].url} alt={spot.SpotImages && spot.SpotImages[0].url} />
+                        <img id='spot-detail-main-img' src={spot.SpotImages && spot.SpotImages[0]?.url} alt={spot.SpotImages && spot.SpotImages[0]?.url} />
                     </div>
                     <div className="spot-detail-img-rest">
                         {spot.SpotImages && spot.SpotImages[1] && spot.SpotImages.map((spotImg, i) => {
