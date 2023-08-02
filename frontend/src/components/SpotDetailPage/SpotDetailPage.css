@@ -100,17 +100,17 @@
 .detail-star-reviews {
     display: flex;
     justify-content: space-between;
-  
    
 }
 
+
+ 
 #detail-star-review {
     display: flex;
     padding: 10px;
     font-size: 14pt;
     font-family: 'Nunito', sans-serif;
     gap: 10px;
-    width: 100%;
 }
 
 #detail-star-review :first-child{
