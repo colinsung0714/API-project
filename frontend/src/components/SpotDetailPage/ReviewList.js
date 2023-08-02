@@ -14,6 +14,7 @@ const ReviewList = ({ review, currentUser }) => {
     //     dispatch(fetchDeleteReview(review.id)).then(closeModal)
     //     setModalOn(!modalOn)
     // }
+
     const testReview = Object.values(useSelector(state=>state.reviews.spot))
     const getMonth = (review) => {
         const month = new Date(review.createdAt)
@@ -53,7 +54,11 @@ const ReviewList = ({ review, currentUser }) => {
     
         }
     }
-    if(!Object.values(testReview).length) return null
+    
+    if(!Object.values(testReview).length || !currentUser )  return (
+        <div id="recommend-review-comment">Be the first to post a review!</div>
+    )
+    console.log(testReview)
     return (<>{testReview.sort((a, b) => {
         const timeA = new Date(a.createdAt)
         const timeB = new Date(b.createdAt)
