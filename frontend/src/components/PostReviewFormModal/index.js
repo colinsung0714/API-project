@@ -21,7 +21,7 @@ const PostReviewFormModal = () => {
             stars: starRating
         }
         dispatch(fetchpostReviewsbySpot(newReview, spot.id))
-            // .then(()=>dispatch(fetchGetSpotDetail(spot.id)))
+            .then(()=>dispatch(fetchGetSpotDetail(spot.id)))
             .then(closeModal)
             .catch(data => {
                 if (data && data.message) {
