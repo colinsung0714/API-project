@@ -2,7 +2,7 @@ import { csrfFetch } from "./csrf";
 
 const GET_REVIEWS_SPOT = '/spots/:spotId/reviews'
 const POST_REVIEWS_SPOT = '/spots/:spotId/reviews/new'
-
+const DELETE_REVIEW ='/api/reviews/:reviewId'
 
 const getReviewsbySpot = (reviews) => {
     return {
@@ -15,6 +15,13 @@ const postReviewsbySpot = (review) => {
     return {
         type: POST_REVIEWS_SPOT,
         review
+    }
+}
+
+const deleteReview = (reviewId) => {
+    return {
+        type:DELETE_REVIEW,
+        reviewId
     }
 }
 
@@ -46,6 +53,21 @@ export const fetchgetReviewsbySpot = (spotId) => async dispatch => {
     }
 }
 
+export const fetchDeleteReview = (reviewId) => async dispatch => {
+    const res = await csrfFetch(`/api/reviews/${reviewId}`, {
+        method:'DELETE'
+    })
+
+    if(res.ok) {
+        const data = await res.json()
+        dispatch(deleteReview(reviewId))
+        return data
+    }
+    else {
+        throw res
+    }
+}
+
 const initialState = { spot: { optionalOrderedList: [] }, user: { optionalOrderedList: [] } };
 
 const reviewsReducer = (state = initialState, action) => {
@@ -58,6 +80,13 @@ const reviewsReducer = (state = initialState, action) => {
         }
         case POST_REVIEWS_SPOT : {
             return {...state, spot:{...state.spot, [action.review.id]:{...action.review}}}
+        }
+        case DELETE_REVIEW : {
+            newState = {...state}
+            console.log('before', newState)
+            delete newState.spot[action.reviewId]
+            console.log('after', newState)
+            return newState
         }
         default:
             return state;

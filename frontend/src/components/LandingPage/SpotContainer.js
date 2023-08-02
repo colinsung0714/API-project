@@ -1,17 +1,21 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from 'react-router-dom'
+import { useSelector } from "react-redux";
 import './SpotContainer.css'
 import '../ManageSpotPage/ManageSpotPage.css'
-
+import OpenModalButton from "../OpenModalButton";
+import DeleteSpotModal from '../DeleteSpotModal'
 const SpotContainer = ({ spot, formType }) => {
     const [tooltip, setTooltip] = useState(false)
+   
     const history = useHistory()
     const ref = useRef()
-
     const clickImg = () => {
         history.push(`/spots/${spot.id}`)
     }
-     
+
+
+
     const gotoUpdate = () => {
       
         const dataInfo = { formType:'update', spotId:spot.id}
@@ -20,6 +24,8 @@ const SpotContainer = ({ spot, formType }) => {
             state: dataInfo,
           });
     }
+    if(!Object.values(spot).length) return null;
+    
     return (
         
         <div className="spot-container">
@@ -39,7 +45,8 @@ const SpotContainer = ({ spot, formType }) => {
             </div>
             {formType === 'owner' ? <div className="update-delete-spot-button-container">
                     <button onClick={gotoUpdate} className="owner-update-button">Update</button>
-                    <button className="owner-delete-button">Delete</button>
+                    <OpenModalButton className="owner-delete-button" buttonText="Delete" 
+                modalComponent={<DeleteSpotModal spot={spot} />} />
                 </div> :<></>}
         </div>
         

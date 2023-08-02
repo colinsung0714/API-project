@@ -1,23 +1,36 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchgetAllSpots } from "../../store/spots";
 import SpotContainer from "../LandingPage/SpotContainer";
+import { useHistory } from "react-router-dom";
 
 const ManageSpotPage = () => {
     const currentUser = Object.values(useSelector(state=>state.session))
-    
+    const history = useHistory()
     const spots = Object.values(useSelector(state => state.spots.allSpots))
+   
     const dispatch = useDispatch()
+  
     useEffect(() => {
         dispatch(fetchgetAllSpots())
-    }, [dispatch])
+    },[dispatch])
+
+  
     if(!currentUser.length) return null
-    if (!spots) return null
-    const ownSpots =spots.filter(spot=>spot.ownerId === currentUser[0].id)
-    
+    if (!spots.length) return null
+    let ownSpots =spots.filter(spot=>spot.ownerId === currentUser[0].id)
+  
+    if(!ownSpots.length) return null
+  
     return (
+        <>
+        <div className="manage-spot-header">
+        <div>Manage Spots</div>
+        <button onClick={()=>history.push('/spots/new')} id='manage-spot-create-button' >Create a New Spot</button>
+        </div>
         <div className="all-spots-container">
-            {ownSpots.map(spot => {
+             
+            { ownSpots.map(spot => {
                 if (spot.id) {
                     return <SpotContainer key={spot.id} spot={spot} formType={'owner'} />
                 } else {
@@ -26,6 +39,7 @@ const ManageSpotPage = () => {
             }
             )}
         </div>
+        </>
     )
 }
 

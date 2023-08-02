@@ -1,0 +1,41 @@
+.delete-confirm-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 320px;
+    gap: 10px;
+    
+}
+
+#confirm-delete-head {
+    font-size: 24px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.delete-confirm-container {
+    font-family: 'Nunito', sans-serif;
+    font-size: 14pt;
+}
+
+#delete-spot-button {
+    background-color: red;
+    cursor: pointer;
+    font-size: 14pt;
+    text-align: center;
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    margin: 10px;
+    box-shadow: 4px 4px 2px black;
+    margin: 0;
+}
+
+#not-delete-spot-button {
+    font-family: 'Nunito', sans-serif;
+    font-size: 14pt;
+    cursor: pointer;
+    background-color: #999999;
+    color: white;
+    border: solid 2px black;
+    box-shadow: 2px 2px 2px black;
+}

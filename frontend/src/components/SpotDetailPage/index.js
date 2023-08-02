@@ -12,7 +12,8 @@ const SpotDetailPage = () => {
         dispatch(fetchGetSpotDetail(spotId))
     }, [dispatch, spotId])
     const spot = useSelector(state => state.spots.singleSpot)
-   
+    const reviews = Object.values(useSelector(state => state.reviews.spot))
+    
     if (!Object.values(spot).length) return null
     return (
         <div className="spot-detail-review-container">
@@ -52,7 +53,7 @@ const SpotDetailPage = () => {
                     </div>
                 </div>
             </div>
-            <SpotReviews spotId={spotId} spot={spot}/>
+            <SpotReviews spotId={spotId} spot={spot} reviews={reviews}/>
         </div>
     )
 }
