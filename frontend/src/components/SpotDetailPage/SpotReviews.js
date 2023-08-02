@@ -6,9 +6,9 @@ import ReviewList from "./ReviewList";
 import './SpotReviews.css'
 import OpenModalButton from '../OpenModalButton'
 import PostReviewFormModal from '../PostReviewFormModal'
+import DeleteReviewModal from '../DeleteReviewModal'
+const SpotReviews = ({ spotId, spot, reviews }) => {
 
-const SpotReviews = ({ spotId, spot }) => {
-    const reviews = Object.values(useSelector(state => state.reviews.spot))
     const currentUser = useSelector(state => state.session.user)
     const dispatch = useDispatch()
     useEffect(() => {
@@ -36,6 +36,19 @@ const SpotReviews = ({ spotId, spot }) => {
         }
     }
 
+    const checkReviewByUser = () => {
+
+        if (!reviews.length) return 'nonvisible'
+        else {
+            for (let review of reviews) {
+                if (currentUser.id === review.userId) {
+                    return;
+                }
+            }
+            return 'nonvisible'
+        }
+    }
+
     if (!reviews.length && currentUser?.id !== spot.ownerId) {
         return (
             <div>
@@ -43,7 +56,7 @@ const SpotReviews = ({ spotId, spot }) => {
                     <ViewSummaryInfo spot={spot} />
                 </div>
                 {currentUser && <OpenModalButton id="post-review-button" className={checkUser()} buttonText="Post Your Review"
-                modalComponent={<PostReviewFormModal />} />}
+                    modalComponent={<PostReviewFormModal />} />}
                 <div id="be-first-msg">
                     Be the first to post a review!
                 </div>
@@ -54,7 +67,7 @@ const SpotReviews = ({ spotId, spot }) => {
     return (
         <div className="spot-review-container">
             <div>
-                <ViewSummaryInfo spot={spot}/>
+                <ViewSummaryInfo spot={spot} />
             </div>
             {currentUser && <OpenModalButton id="post-review-button" className={checkUser()} buttonText="Post Your Review"
                 modalComponent={<PostReviewFormModal />} />}
@@ -65,7 +78,14 @@ const SpotReviews = ({ spotId, spot }) => {
                     if (timeA.getTime() > timeB.getTime()) return -1
                     if (timeA.getTime() < timeB.getTime()) return 1
                     return 0;
-                }).map(review =><div key={review.id} > <ReviewList review={review} currentUser={currentUser} /></div>)}
+                }).map(review => {
+                   
+                return  <div key={review.id} className="review-box-container" >
+                        <ReviewList review={review} currentUser={currentUser} />
+                        {currentUser.id === review.userId && <OpenModalButton className='delete-review-button' buttonText="Delete" modalComponent={<DeleteReviewModal review={review}/>}/>}
+                        </div>
+
+                })}
             </div>
         </div>
     )

@@ -1,0 +1,45 @@
+.delete-review-confirm-container {
+    width: fit-content;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    font-family: 'Nunito', sans-serif;
+    justify-content: center;
+    align-items: center;
+}
+
+#delete-head {
+    font-size: 18pt;
+    font-weight: bold;
+    text-align: center;
+}
+
+#delete-subhead {  
+    font-size: 14pt;
+}
+
+#delete-yes-button {
+    background-color: red;
+    cursor: pointer;
+    font-size: 14pt;
+    text-align: center;
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    margin: 10px;
+    box-shadow: 2px 2px 2px black;
+    width: 100%;
+    height: 50px;
+}
+
+#delete-no-button {
+    border: solid 2px black;
+    font-family: 'Nunito', sans-serif;
+    background-color: #999999;
+    color: white;
+    margin: 1px auto;
+    margin-top: 5px;
+    width: 100%;
+    box-shadow: 2px 2px 2px black;
+    height: 50px;
+}

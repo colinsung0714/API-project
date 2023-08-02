@@ -264,7 +264,7 @@
     border:solid  2px black;
     box-shadow: 2px 2px 2px black;
     cursor: pointer;
-    width: 150px;
+    width: fit-content;
     height: 50px;
     margin-bottom: 30px;
 }

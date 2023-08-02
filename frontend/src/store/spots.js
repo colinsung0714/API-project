@@ -4,6 +4,7 @@ const GET_ALL_SPOT = '/spots/allspots'
 const GET_SPOT_DETAIL = '/spots/:spotId/detail'
 const POST_NEW_SPOT =  '/spots'
 const POST_NEW_IMAGE = '/spots/:spotId/images'
+const DELETE_SPOT = '/api/spots/:spotId'
 export const getallSpots = (spots) => {
     return {
         type: GET_ALL_SPOT,
@@ -31,6 +32,11 @@ export const postNewImage = (image) => {
         image
     }
 }
+
+export const removeSpot = (spotId) => ({
+    type: DELETE_SPOT,
+    spotId
+  });
 
 export const fetchgetAllSpots = () => async dispatch => {
     const res = await csrfFetch('/api/spots')
@@ -92,6 +98,60 @@ export const fetchPostNewImage = (url, spotId) => async dispatch => {
     }
 }
 
+export const fetchEditNewSpot = (spot, spotId) => async dispatch => {
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
+        method: 'PUT',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify(spot)
+    })
+
+    if(res.ok) {
+        const data = await res.json()
+        dispatch(postNewSpot(data))
+        
+        return data
+    } else {
+        throw res
+    }
+}
+
+export const fetchEditImage = (arr) => async dispatch => {
+    
+    const req = arr.map(img=>csrfFetch(`/api/spot-images/${img.id}`, {
+        method: 'PUT',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify(img)
+    }))
+    Promise.allSettled(req).then(async response=>{
+        if(response.status === 'fulfilled') {
+            const data = await  response.json()
+            dispatch(postNewImage(data))
+            return data
+        }
+        }).catch(e=>{
+        throw e
+    })
+   
+}
+
+export const fetchDeleteSpot = (spotId) => async dispatch => {
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
+        method: 'DELETE'
+    })
+
+    if(res.ok) {
+        const data = await res.json()
+        dispatch(removeSpot(spotId))
+        return data
+    } else {
+        throw res
+    }
+}
+
 const initialState = { allSpots: { optionalOrderedList: [] }, singleSpot: {} };
 
 const spotsReducer = (state = initialState, action) => {
@@ -114,6 +174,14 @@ const spotsReducer = (state = initialState, action) => {
             } else {
                 return { ...state, singleSpot: { ...state.singleSpot, SpotImages:[action.image] } }
             }
+        }
+
+        case DELETE_SPOT: {
+            newState={...state}
+         
+            delete newState.allSpots[action.spotId]
+            
+            return newState
         }
         default:
             return state;

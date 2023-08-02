@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom'
-import { fethPostNewSpot, fetchPostNewImage, fetchGetSpotDetail } from '../../store/spots'
+import { fethPostNewSpot, fetchPostNewImage, fetchGetSpotDetail, fetchEditNewSpot, fetchEditImage } from '../../store/spots'
 import './NewSpotPage.css'
 
 const NewSpotPage = () => {
@@ -11,7 +11,9 @@ const NewSpotPage = () => {
     const location = useLocation()
     const formType = location.state?.formType || 'create'
     const spotId = location.state?.spotId
-
+    const updateImages = useSelector(state => state.spots.singleSpot.SpotImages)
+    const updateSpot = useSelector(state => state.spots.singleSpot)
+    let updateId = spotId
     useEffect(() => {
         if (formType === 'update') {
             dispatch(fetchGetSpotDetail(spotId)).then(res => {
@@ -31,6 +33,22 @@ const NewSpotPage = () => {
                 setImgurlThree(img4?.url ? img4.url : '')
                 setImgurlFour(img5?.url ? img5.url : '')
             })
+        } else {
+
+            setPrice('')
+            setCountry('')
+            setAddress('')
+            setCity('')
+            setState('')
+            setLatitude('')
+            setLongitude('')
+            setDescription('')
+            setTitle('')
+            setPreviewImg('')
+            setImgurlOne('')
+            setImgurlTwo('')
+            setImgurlThree('')
+            setImgurlFour('')
         }
     }, [dispatch, formType, spotId])
     const [country, setCountry] = useState('')
@@ -57,7 +75,7 @@ const NewSpotPage = () => {
     }
     const checkingImgUrlExt = (img) => {
         // if (img) {
-        if (!img.length) return true
+        // if (!img.length) return true
         if (img.includes('.png') || img.includes('.jpg') || img.includes('.jpeg')) {
             const splitPart = img.split('.')
             const lastPart = splitPart[splitPart.length - 1]
@@ -89,7 +107,6 @@ const NewSpotPage = () => {
         // if (checkingImgUrlExt(imgurlTwo)) error.imgurlTwo = 'Image URL must end in .png, .jpg, or .jpeg'
         // if (checkingImgUrlExt(imgurlThree)) error.imgurlThree = 'Image URL must end in .png, .jpg, or .jpeg'
         // if (checkingImgUrlExt(imgurlFour)) error.imgurlFour = 'Image URL must end in .png, .jpg, or .jpeg'
-        let spotId;
         const newSpot = {
             address,
             city,
@@ -101,9 +118,43 @@ const NewSpotPage = () => {
             description,
             price
         }
-        console.log(Object.values(error).length)
+        let imgUrls = {
+            previewImg,
+            imgurlOne,
+            imgurlTwo,
+            imgurlThree,
+            imgurlFour
+        }
+        if(updateImages) imgUrls = [...updateImages]
+        let spotId;
+        console.log(imgUrls)
         const imgArr = [previewImg && previewImg, imgurlOne && imgurlOne, imgurlTwo && imgurlTwo, imgurlThree && imgurlThree, imgurlFour && imgurlFour]
         if (!Object.values(error).length) {
+            if (formType === 'update') {
+        
+                dispatch(fetchEditNewSpot(newSpot, updateSpot.id, imgUrls))
+                    .then(
+                       dispatch(fetchEditImage(imgUrls))
+                    )
+                    .then(() => {
+                        setErrors({})
+                        return history.push(`/spots/${updateId}`)
+                    }).catch(async res => {
+                        const error = await res.json()
+                        if (error.errors) {
+                            let errorObj = { ...error.errors }
+                            if (!previewImg.length) errorObj.previewImg = 'Preview image is required'
+                            if (checkingImgUrlExt(previewImg)) errorObj.previewImgExt = 'Image URL must end in .png, .jpg, or .jpeg'
+                            if (checkingImgUrlExt(imgurlOne)) errorObj.imgurlOne = 'Image URL must end in .png, .jpg, or .jpeg'
+                            if (checkingImgUrlExt(imgurlTwo)) errorObj.imgurlTwo = 'Image URL must end in .png, .jpg, or .jpeg'
+                            if (checkingImgUrlExt(imgurlThree)) errorObj.imgurlThree = 'Image URL must end in .png, .jpg, or .jpeg'
+                            if (checkingImgUrlExt(imgurlFour)) errorObj.imgurlFour = 'Image URL must end in .png, .jpg, or .jpeg'
+                            setErrors(errorObj);
+                        }
+                    })
+                    return;
+            } 
+
             dispatch(fethPostNewSpot(newSpot)).then(spot => {
                 spotId = spot.id
                 for (let i = 0; i < imgArr.length; i++) {
@@ -255,7 +306,7 @@ const NewSpotPage = () => {
 
 
 
-                <button id="new-spot-submit" type="submit">Create Spot</button>
+                <button id="new-spot-submit" type="submit">{formType === 'update' ? 'Update your Spot' : 'Create a New Spot'}</button>
             </form>
         </div>
     )
