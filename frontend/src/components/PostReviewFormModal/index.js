@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchpostReviewsbySpot } from '../../store/reviews'
 import './PostReviewFormModal.css'
 import { useModal } from '../../context/Modal'
-
+import {fetchGetSpotDetail} from '../../store/spots'
 const PostReviewFormModal = () => {
     const spot = useSelector(state => state.spots.singleSpot)
     const [review, setReview] = useState('')
@@ -21,6 +21,7 @@ const PostReviewFormModal = () => {
             stars: starRating
         }
         dispatch(fetchpostReviewsbySpot(newReview, spot.id))
+            .then(()=>dispatch(fetchGetSpotDetail(spot.id)))
             .then(closeModal)
             .catch(data => {
                 if (data && data.message) {

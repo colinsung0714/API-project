@@ -1,20 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from 'react-router-dom'
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import './SpotContainer.css'
 import '../ManageSpotPage/ManageSpotPage.css'
 import OpenModalButton from "../OpenModalButton";
 import DeleteSpotModal from '../DeleteSpotModal'
+
 const SpotContainer = ({ spot, formType }) => {
     const [tooltip, setTooltip] = useState(false)
-   
+    
     const history = useHistory()
     const ref = useRef()
     const clickImg = () => {
         history.push(`/spots/${spot.id}`)
     }
 
-
+    
 
     const gotoUpdate = () => {
       

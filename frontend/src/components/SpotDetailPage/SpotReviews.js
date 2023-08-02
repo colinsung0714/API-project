@@ -72,7 +72,7 @@ const SpotReviews = ({ spotId, spot, reviews }) => {
             {currentUser && <OpenModalButton id="post-review-button" className={checkUser()} buttonText="Post Your Review"
                 modalComponent={<PostReviewFormModal />} />}
             <div className="spot-review-list-container">
-                {reviews.sort((a, b) => {
+                {/* {reviews.sort((a, b) => {
                     const timeA = new Date(a.createdAt)
                     const timeB = new Date(b.createdAt)
                     if (timeA.getTime() > timeB.getTime()) return -1
@@ -82,10 +82,10 @@ const SpotReviews = ({ spotId, spot, reviews }) => {
                    
                 return  <div key={review.id} className="review-box-container" >
                         <ReviewList review={review} currentUser={currentUser} />
-                        {currentUser.id === review.userId && <OpenModalButton className='delete-review-button' buttonText="Delete" modalComponent={<DeleteReviewModal review={review}/>}/>}
                         </div>
 
-                })}
+                })} */}
+                 <ReviewList currentUser={currentUser} />
             </div>
         </div>
     )

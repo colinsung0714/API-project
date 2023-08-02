@@ -1,8 +1,20 @@
-import React from "react";
+import React, {useState} from "react";
 import './SpotReviews.css'
-
+import DeleteReviewModal from '../DeleteReviewModal'
+import OpenModalButton from '../OpenModalButton'
+import { useDispatch, useSelector } from 'react-redux'
+import {fetchDeleteReview} from '../../store/reviews'
+import { useModal } from '../../context/Modal'
 
 const ReviewList = ({ review, currentUser }) => {
+    const dispatch = useDispatch()
+    const { closeModal } = useModal();
+    const [modalOn, setModalOn] = useState(false)
+    // const deleteReview = () => {
+    //     dispatch(fetchDeleteReview(review.id)).then(closeModal)
+    //     setModalOn(!modalOn)
+    // }
+    const testReview = Object.values(useSelector(state=>state.reviews.spot))
     const getMonth = (review) => {
         const month = new Date(review.createdAt)
         switch (month.getMonth()) {
@@ -37,16 +49,27 @@ const ReviewList = ({ review, currentUser }) => {
     const getYear = (review) => {
         if(Object.values(review).length) {
         const year = review.createdAt?.split('-')
-        return year[0]
+         return year[0]
+    
         }
     }
-    if(!Object.values(review).length) return null
-    return (
+    if(!Object.values(testReview).length) return null
+    return (<>{testReview.sort((a, b) => {
+        const timeA = new Date(a.createdAt)
+        const timeB = new Date(b.createdAt)
+        if (timeA.getTime() > timeB.getTime()) return -1
+        if (timeA.getTime() < timeB.getTime()) return 1
+        return 0;
+    })
+        .map(review=>
         <div key={review.id} className="firstname-month-comment-list-container">
             <div id="review-list-firstName">{ review.User ? review.User.firstName : currentUser.firstName}</div>
             <div id='review-list-month'>{`${getMonth(review)} ${getYear(review)}`}</div>
             <div id='review-list-comment'>{ review.review}</div>
+            {currentUser.id === review.userId && <OpenModalButton className='delete-review-button' buttonText="Delete" modalComponent={<DeleteReviewModal  review={review}/>}/>}
         </div>
+        )}
+        </>
     )
 }
 
