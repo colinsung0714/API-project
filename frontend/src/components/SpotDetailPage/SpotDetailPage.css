@@ -166,4 +166,6 @@
 #spot-description {
     font-family: 'Nunito', sans-serif;
     font-size: 14pt;
+    word-wrap: break-word;
+    width: 600px;
 }

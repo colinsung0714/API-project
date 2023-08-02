@@ -25,7 +25,7 @@ const ReviewList = ({ review, currentUser }) => {
             case 2:
                 return 'March'
             case 3:
-                return 'Apirl'
+                return 'April'
             case 4:
                 return 'May'
             case 5:

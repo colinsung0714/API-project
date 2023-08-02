@@ -4,7 +4,7 @@
     flex-direction: column;
     align-items: center;
     margin: 10px;
-    height: 300px;
+    height: auto;
     margin-top: 25px;
 }
 
@@ -36,7 +36,6 @@
 .city-state {
     font-size: 14pt;
     font-family: 'Nunito', sans-serif;
-
 }
 
 .price-container {
@@ -49,6 +48,7 @@
     position: relative;
     width: 100%;
     height: 200px;
+    margin-top: 30px;
 }
 
 .tooltip {
