@@ -1,7 +1,7 @@
 import React from 'react'
 import { useModal } from '../../context/Modal'
 import { useDispatch } from 'react-redux'
-import { fetchDeleteSpot, fetchgetAllSpots } from '../../store/spots'
+import { fetchDeleteSpot } from '../../store/spots'
 import './DeleteSpotModal.css'
 const DeleteSpotModal = ({ spot}) => {
     
@@ -9,7 +9,7 @@ const DeleteSpotModal = ({ spot}) => {
     const { closeModal } = useModal();
     const deleteSpot = () => {
         dispatch(fetchDeleteSpot(spot.id))
-        .then(()=>dispatch(fetchgetAllSpots()))
+        // .then(()=>dispatch(fetchgetAllSpots()))
         .then(closeModal)
     
     }

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchgetAllSpots } from "../../store/spots";
 import SpotContainer from "../LandingPage/SpotContainer";
@@ -17,10 +17,10 @@ const ManageSpotPage = () => {
 
   
     if(!currentUser.length) return null
-    if (!spots.length) return null
+    // if (!spots.length) return null
     let ownSpots =spots.filter(spot=>spot.ownerId === currentUser[0].id)
   
-    if(!ownSpots.length) return null
+    // if(!ownSpots.length) return null
   
     return (
         <>
