@@ -79,13 +79,14 @@ const reviewsReducer = (state = initialState, action) => {
             return { ...state, spot: { ...newState } }
         }
         case POST_REVIEWS_SPOT : {
-            return {...state, spot:{...state.spot, [action.review.id]:{...action.review}}}
+            newState={...action.review}
+            return {...state, spot:{...state.spot, [action.review.id]:{...newState}}}
         }
         case DELETE_REVIEW : {
             newState = {...state}
-            console.log('before', newState)
+            console.log(newState.spot[action.reviewId])
             delete newState.spot[action.reviewId]
-            console.log('after', newState)
+       
             return newState
         }
         default:

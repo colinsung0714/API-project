@@ -2,12 +2,14 @@ import React from "react";
 import { useModal } from '../../context/Modal'
 import { useDispatch } from 'react-redux'
 import {fetchDeleteReview} from '../../store/reviews'
+import {fetchGetSpotDetail} from '../../store/spots'
 import "./DeleteReviewModal.css"
-const DeleteReviewModal = ({review}) => {
+const DeleteReviewModal = ({review }) => {
     const dispatch = useDispatch()
     const { closeModal } = useModal();
     const deleteReview = () => {
-        dispatch(fetchDeleteReview(review.id)).then(closeModal)
+       
+        dispatch(fetchDeleteReview(review.id)).then(()=>dispatch(fetchGetSpotDetail(review.spotId))).then(closeModal)
     }
     return (
         <div className="delete-review-confirm-container">
