@@ -119,13 +119,17 @@ export const fetchEditNewSpot = (spot, spotId) => async dispatch => {
 
 export const fetchEditImage = (arr) => async dispatch => {
     
-    const req = arr.map(img=>csrfFetch(`/api/spot-images/${img.id}`, {
+    const req = arr.map(img=>{
+        if(img.id) {
+        csrfFetch(`/api/spot-images/${img.id}`, {
         method: 'PUT',
         headers:{
             'Content-Type':'application/json'
         },
         body:JSON.stringify(img)
-    }))
+    })
+}
+})
     Promise.allSettled(req).then(async response=>{
         if(response.status === 'fulfilled') {
             const data = await  response.json()
