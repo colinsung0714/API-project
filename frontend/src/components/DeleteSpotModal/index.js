@@ -9,6 +9,7 @@ const DeleteSpotModal = ({ spot}) => {
     const { closeModal } = useModal();
     const deleteSpot = () => {
         dispatch(fetchDeleteSpot(spot.id))
+        .then(()=>dispatch(fetchgetAllSpots()))
         .then(closeModal)
     
     }
