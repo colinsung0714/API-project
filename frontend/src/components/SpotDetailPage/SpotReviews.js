@@ -51,7 +51,7 @@ const SpotReviews = ({ spotId, spot, reviews }) => {
 
     if (!reviews.length && currentUser?.id !== spot.ownerId) {
         return (
-            <div>
+            <div id="be-the-first-review-container">
                 <div>
                     <ViewSummaryInfo spot={spot} />
                 </div>

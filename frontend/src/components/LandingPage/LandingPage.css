@@ -2,4 +2,21 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap:40px;
+    margin: 10px 30px;
+
+}
+
+.logo-container {
+    margin-left: 50px;
+}
+
+.logo-container i {
+    font-weight: bold;
+}
+
+
+.logo-container a{
+   font-weight: bold;
+   font-family: 'Nunito', sans-serif;
+   font-size: 24pt;
 }

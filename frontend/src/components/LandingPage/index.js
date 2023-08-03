@@ -11,6 +11,8 @@ const LandingPage = () => {
     }, [])
     if (!spots) return null
     return (
+        <>
+        <div className="space-saver"></div>
         <div className="all-spots-container">
             {spots.map(spot => {
                 if (spot.id) {
@@ -21,6 +23,7 @@ const LandingPage = () => {
             }
             )}
         </div>
+        </>
     )
 }
 

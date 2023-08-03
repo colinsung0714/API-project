@@ -10,7 +10,7 @@ function Navigation({ isLoaded }) {
   return (
     <header>
       <div className='logo-container'>
-        <NavLink id='logo' exact to="/"><i className="fa-brands fa-airbnb"></i>AirBrB</NavLink>
+        <NavLink id='logo' exact to="/"><i className="fa-brands fa-airbnb"></i> AirBrB</NavLink>
       </div>
       {isLoaded && (
         <div className='navigation-left'>

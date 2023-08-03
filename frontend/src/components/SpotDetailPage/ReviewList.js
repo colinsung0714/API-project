@@ -14,7 +14,7 @@ const ReviewList = ({ review, currentUser }) => {
     //     dispatch(fetchDeleteReview(review.id)).then(closeModal)
     //     setModalOn(!modalOn)
     // }
-
+    const spot = useSelector(state=>state.spots.singleSpot)
     const testReview = Object.values(useSelector(state=>state.reviews.spot))
     const getMonth = (review) => {
         const month = new Date(review.createdAt)
@@ -55,10 +55,10 @@ const ReviewList = ({ review, currentUser }) => {
         }
     }
     
-    if(!Object.values(testReview).length || !currentUser )  return (
+    if(!Object.values(testReview).length && currentUser.id !== spot?.ownerId )  return (
         <div id="recommend-review-comment">Be the first to post a review!</div>
     )
-    console.log(testReview)
+
     return (<>{testReview.sort((a, b) => {
         const timeA = new Date(a.createdAt)
         const timeB = new Date(b.createdAt)
@@ -68,10 +68,10 @@ const ReviewList = ({ review, currentUser }) => {
     })
         .map(review=>
         <div key={review.id} className="firstname-month-comment-list-container">
-            <div id="review-list-firstName">{ review.User ? review.User.firstName : currentUser.firstName}</div>
+            <div id="review-list-firstName">{ review.User ? review.User.firstName : currentUser?.firstName}</div>
             <div id='review-list-month'>{`${getMonth(review)} ${getYear(review)}`}</div>
             <div id='review-list-comment'>{ review.review}</div>
-            {currentUser.id === review.userId && <OpenModalButton className='delete-review-button' buttonText="Delete" modalComponent={<DeleteReviewModal  review={review}/>}/>}
+            {currentUser?.id === review.userId && <OpenModalButton className='delete-review-button' buttonText="Delete" modalComponent={<DeleteReviewModal  review={review}/>}/>}
         </div>
         )}
         </>

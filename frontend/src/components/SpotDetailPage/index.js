@@ -75,7 +75,7 @@ const SpotDetailPage = () => {
                                 <div id="detail-price"><div>${spot.price && spot.price}</div><div>night</div></div>
                                 <ViewSummaryInfo spot={spot} />
                             </div>
-                            <button id="reserve-button" onClick={() => alert("Feature coming soon")}>Button</button>
+                            <button id="reserve-button" onClick={() => alert("Feature coming soon")}>Reserve</button>
                         </div>
                     </div>
                 </div>

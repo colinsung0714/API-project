@@ -2,7 +2,8 @@
     max-width: 1000px;
     display: flex;
     flex-direction: column;
-    margin: auto;
+    
+    margin-top: 150px;
 }
 
 .spot-detail-contact-info-container {
@@ -16,6 +17,10 @@
     font-size: 18pt;
     font-weight: bold;
     margin-top: 10px
+}
+
+.spot-detail-container {
+    margin: 0 40px;
 }
 
 .spot-detail-address {
@@ -155,6 +160,7 @@
     font-family: 'Nunito', sans-serif;
     margin: 10px;
     box-shadow: 4px 4px 2px black;
+    height: 30pt;
 }
 
 #hostedby {
