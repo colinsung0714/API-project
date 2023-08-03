@@ -13,6 +13,8 @@ const NewSpotPage = () => {
     const spotId = location.state?.spotId
     const updateImages = useSelector(state => state.spots.singleSpot.SpotImages)
     const updateSpot = useSelector(state => state.spots.singleSpot)
+    const currentUser = Object.values(useSelector(state=>state.session))
+   
     let updateId = spotId
     useEffect(() => {
         if (formType === 'update') {
@@ -193,6 +195,7 @@ const NewSpotPage = () => {
             setErrors(error)
         }
     }
+    if(!currentUser[0]) return null
     return (
         <div className="new-spot-container">
 
