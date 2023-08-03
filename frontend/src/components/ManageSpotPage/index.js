@@ -24,9 +24,10 @@ const ManageSpotPage = () => {
   
     return (
         <>
+        <div className="space-saver"></div>
         <div className="manage-spot-header">
-        <div>Manage Spots</div>
-        <button onClick={()=>history.push('/spots/new')} id='manage-spot-create-button' >Create a New Spot</button>
+        <div>Manage Your Spots</div>
+        { !ownSpots.length && <button onClick={()=>history.push('/spots/new')} id='manage-spot-create-button' >Create a New Spot</button>}
         </div>
         <div className="all-spots-container">
              
