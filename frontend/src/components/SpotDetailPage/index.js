@@ -9,7 +9,9 @@ const SpotDetailPage = () => {
     const { spotId } = useParams()
     const dispatch = useDispatch()
     useEffect(() => {
-        dispatch(fetchGetSpotDetail(spotId))
+        dispatch(fetchGetSpotDetail(spotId)).catch((e)=>{
+            return null;
+        })
     }, [dispatch, spotId])
     const spot = useSelector(state => state.spots.singleSpot)
     const reviews = Object.values(useSelector(state => state.reviews.spot))
@@ -24,7 +26,7 @@ const SpotDetailPage = () => {
             if(img.url) restImages.push(img.url)
         }
     }
-    console.log(imageOne)
+
    
     while(restImages.length < 4) {
         restImages.push('')
