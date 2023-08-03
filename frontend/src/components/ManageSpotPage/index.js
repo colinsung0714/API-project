@@ -16,17 +16,17 @@ const ManageSpotPage = () => {
     },[dispatch])
 
   
-    if(!currentUser.length) return null
-    // if (!spots.length) return null
+    if(!currentUser[0]) return null
+    if (!spots.length) return null
     let ownSpots =spots.filter(spot=>spot.ownerId === currentUser[0].id)
-  
-    // if(!ownSpots.length) return null
+
+    
   
     return (
         <>
         <div className="space-saver"></div>
         <div className="manage-spot-header">
-        <div>Manage Your Spots</div>
+       <div>Manage Your Spots</div>
         { !ownSpots.length && <button onClick={()=>history.push('/spots/new')} id='manage-spot-create-button' >Create a New Spot</button>}
         </div>
         <div className="all-spots-container">
