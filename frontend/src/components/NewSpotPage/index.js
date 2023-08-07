@@ -127,13 +127,15 @@ const NewSpotPage = () => {
         const imgArr = [previewImg && previewImg, imgurlOne && imgurlOne, imgurlTwo && imgurlTwo, imgurlThree && imgurlThree, imgurlFour && imgurlFour]
         if (!Object.values(error).length) {
             if (formType === 'update') {
+                console.log(updateImages)
                 let imgUrls = [
-                    {id:updateImages[0]?.id , url:previewImg},
-                    {id:updateImages[1]?.id, url:imgurlOne},
-                    {id:imgurlTwo[2]?.id, url:imgurlTwo},
-                    {id:imgurlThree[3]?.id, url:imgurlThree},
-                    {id:imgurlFour[4]?.id, url:imgurlFour}
+                    {id:updateImages[0]?.id , url:previewImg, preview:true},
+                    {id:updateImages[1]?.id, url:imgurlOne, preview:false},
+                    {id:updateImages[2]?.id, url:imgurlTwo, preview:false},
+                    {id:updateImages[3]?.id, url:imgurlThree, preview:false},
+                    {id:updateImages[4]?.id, url:imgurlFour, preview:false}
                 ]
+                console.log(imgUrls)
                 dispatch(fetchEditNewSpot(newSpot, updateSpot.id, imgUrls))
                     .then(
                        dispatch(fetchEditImage(imgUrls))

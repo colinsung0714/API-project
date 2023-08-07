@@ -13,6 +13,7 @@ header {
     border-bottom: solid 2px lightgrey;
     font-size: 24px;
     font-family: bold;
+    z-index: 0;
 }
 
 #logo {
