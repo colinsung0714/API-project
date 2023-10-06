@@ -50,7 +50,7 @@
 4. Create a **.env** file using the **.envexample** provided
 
 5. Set up your database with information from your .env and then run the following to create your database, migrate, and seed:
-    * `npx dotenv sequelize db:migrat`
+    * `npx dotenv sequelize db:migrate`
     * `npx dotenv sequelize-cli db:seed:all`
 
 
