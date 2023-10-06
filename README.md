@@ -30,8 +30,7 @@
 ![image](https://github.com/colinsung0714/API-project/assets/99006739/30113939-c371-4dc6-89e8-27d0e1e580a8)
 
 ## Reservation Page
-![image](https://github.com/colinsung0714/API-project/assets/99006739/7a7b9308-47f4-4891-bbf4-28930bcde372)
-
+![image](https://github.com/colinsung0714/API-project/assets/99006739/8dd4cd1a-ede3-41e9-9430-9d5245a26fd6)
 
 ## Reservation Detail Page
 ![image](https://github.com/colinsung0714/API-project/assets/99006739/2d8d2227-90fd-4c92-a333-2c5b23e9209e)
