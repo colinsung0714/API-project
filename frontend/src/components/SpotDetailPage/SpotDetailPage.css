@@ -175,3 +175,23 @@
     word-wrap: break-word;
     width: 500px;
 }
+
+.map-info-container {
+    margin: 40px;
+    font-size: 18pt;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-bottom: solid 2px black;
+    padding-bottom: 60px
+}
+
+#map-address-info {
+    font-size: 14pt;
+}
+
+#spot-map-box {
+    width: 100%;
+    height: 500px;
+}

@@ -26,10 +26,10 @@ export const postNewSpot = (spot) => {
     }
 }
 
-export const postNewImage = (image) => {
+export const postNewImages = (images) => {
     return {
         type:POST_NEW_IMAGE,
-        image
+        images
     }
 }
 
@@ -82,17 +82,14 @@ export const fethPostNewSpot = (spot) => async dispatch => {
     }
 }
 
-export const fetchPostNewImage = (url, spotId) => async dispatch => {
+export const fetchPostNewImage = (files, spotId) => async dispatch => {
     const res = await csrfFetch(`/api/spots/${spotId}/images`, {
         method: 'POST',
-        headers:{
-            'Content-Type':'application/json'
-        },
-        body:JSON.stringify(url)
+        body:files
     })
     const data = await res.json()
     if(res.ok) {
-        dispatch(postNewImage(data))
+        dispatch(postNewImages(data))
     } else {
         throw data
     }
@@ -117,28 +114,25 @@ export const fetchEditNewSpot = (spot, spotId) => async dispatch => {
     }
 }
 
-export const fetchEditImage = (arr) => async dispatch => {
-    
-    const req = arr.map(img=>{
-        if(img.id) {
-        csrfFetch(`/api/spot-images/${img.id}`, {
+export const fetchEditImage = (images, spotId) => async dispatch => {
+
+    const res = await csrfFetch(`/api/spot-images/${spotId}`, {
         method: 'PUT',
-        headers:{
-            'Content-Type':'application/json'
-        },
-        body:JSON.stringify(img)
+        
+        body:images
     })
-}
-})
-    Promise.allSettled(req).then(async response=>{
-        if(response.status === 'fulfilled') {
-            const data = await  response.json()
-            dispatch(postNewImage(data))
-            return data
-        }
-        }).catch(e=>{
-        throw e
-    })
+
+
+   
+    if(res.ok) {
+     
+        const data = await res.json()
+        dispatch(postNewImages(data))
+    } else {
+     
+        const error = await res.json()
+        throw error
+    }
    
 }
 
@@ -174,9 +168,9 @@ const spotsReducer = (state = initialState, action) => {
         }
         case POST_NEW_IMAGE: {
             if(state.singleSpot.SpotImages?.length) {
-            return { ...state, singleSpot: { ...state.singleSpot, SpotImages:[...state.singleSpot.SpotImages, action.image] } }
+            return { ...state, singleSpot: { ...state.singleSpot, SpotImages:[...action.images] } }
             } else {
-                return { ...state, singleSpot: { ...state.singleSpot, SpotImages:[action.image] } }
+                return { ...state, singleSpot: { ...state.singleSpot, SpotImages:[...action.images] } }
             }
         }
 

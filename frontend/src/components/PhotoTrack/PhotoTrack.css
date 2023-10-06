@@ -1,0 +1,9 @@
+#photo-tracker {
+    font-size: 15px;
+    color: darkgray;
+}
+
+#photo-tracker.active {
+   
+    color: lightgray;
+}

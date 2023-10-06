@@ -40,6 +40,22 @@ module.exports = (sequelize, DataTypes) => {
     endDate:{
       type: DataTypes.DATE,
       allowNull:false
+    },
+    guests:{
+      type: DataTypes.INTEGER,
+      allowNull:false
+    },
+    accomodation:{
+      type: DataTypes.DECIMAL(10,2),
+    },
+    serviceFee:{
+      type: DataTypes.DECIMAL(10,2),
+    },
+    taxes:{
+      type: DataTypes.DECIMAL(10,2),
+    },
+    total:{
+      type: DataTypes.DECIMAL(10,2),
     }
   }, {
     sequelize,

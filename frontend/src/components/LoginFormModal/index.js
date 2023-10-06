@@ -17,9 +17,9 @@ function LoginFormModal() {
     return dispatch(sessionActions.login({ credential, password }))
       .then(closeModal)
       .catch(async (res) => {
-        const data = await res.json();
-        if (data && data.message) {
-          setErrors(data);
+       
+        if (res && res.message) {
+          setErrors(res);
         }
       });
   };
@@ -34,9 +34,8 @@ function LoginFormModal() {
     return dispatch(sessionActions.login(demoUser))
       .then(closeModal)
       .catch(async (res) => {
-        const data = await res.json();
-        if (data && data.message) {
-          setErrors(data);
+        if (res && res.message) {
+          setErrors(res);
         }
       });
   };

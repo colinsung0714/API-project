@@ -1,0 +1,43 @@
+.upcoming-reservation-single-container {
+    display: flex;
+    border: solid 1px lightgray;
+    box-shadow: 5px 5px 5px lightgray;
+}
+
+.upcoming-left-upper-box {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.upcoming-left-lower-box {
+    display: flex;
+    width: auto;
+    padding: 20px;
+    gap: 40px;
+}
+
+.upcoming-right-container img{
+    height: 200px;
+    width: 100%
+}
+
+.upcoming-right-container {
+    flex: 1;
+    position: relative;
+}
+
+.upcoming-left-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+#duration-weeks-box {
+    position: absolute;
+    top: 5px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    padding: 5px;
+    margin: 10px;
+}

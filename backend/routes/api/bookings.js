@@ -29,10 +29,10 @@ router.get('/current', requireAuth, async (req, res, next) => {
                 attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
                 include: [{
                     model: SpotImage,
-                    attributes: ['url']
+                    attributes: ['id', 'url', 'preview']
                 }]
             }],
-            attributes: ['id', 'spotId', 'userId', 'startDate', 'endDate', 'createdAt', 'updatedAt']
+            attributes: ['id', 'spotId', 'userId', 'guests', 'accomodation', 'serviceFee', 'taxes', 'total', 'startDate', 'endDate', 'createdAt', 'updatedAt']
         })
         const bookingArr = []
         for (let booking of bookings) {
@@ -41,11 +41,12 @@ router.get('/current', requireAuth, async (req, res, next) => {
             booking.Spot.lat = Number(booking.Spot.lat)
             booking.Spot.lng = Number(booking.Spot.lng)
             booking.Spot.price = Number(booking.Spot.price)
+            const owner = await User.findByPk(booking.Spot.ownerId)
+            booking.Spot.Owner = owner
             const spotImgs = booking.Spot.SpotImages
             for (let spotImg of spotImgs) {
                 booking.Spot.previewImage = spotImg.url
             }
-            delete booking.Spot.SpotImages
             booking.createdAt = booking.createdAt.toISOString().replace('T', ' ').substring(0, 19)
             booking.updatedAt = booking.updatedAt.toISOString().replace('T', ' ').substring(0, 19)
             booking.startDate = booking.startDate.toISOString().replace('T', ' ').substring(0, 10)
@@ -58,6 +59,13 @@ router.get('/current', requireAuth, async (req, res, next) => {
             bookingObj.endDate = booking.endDate
             bookingObj.createdAt = booking.createdAt
             bookingObj.updatedAt = booking.updatedAt
+            bookingObj.Spot.Owner = booking.Spot.Owner
+            bookingObj.Spot.SpotImages = spotImgs
+            bookingObj.guests = booking.guests
+            bookingObj.accomodation = booking.accomodation
+            bookingObj.serviceFee = booking.serviceFee
+            bookingObj.taxes = booking.taxes
+            bookingObj.total = booking.total
             bookingArr.push(bookingObj)
         }
         res.json({ Bookings: bookingArr })
@@ -71,7 +79,7 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
         const bookings = await currentUser.getBookings({ where: { id: req.params.bookingId } })
         if (bookings.length) {
 
-            let { startDate, endDate } = req.body
+            let { startDate, endDate, guests } = req.body
             for (let booking of bookings) {
                 const bookingStartDate = new Date(booking.startDate).getTime()
                 const bookingEndDate = new Date(booking.endDate).getTime()
@@ -111,6 +119,7 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
             }
             bookings[0].startDate = startDate
             bookings[0].endDate = endDate
+            bookings[0].guests = guests
             await bookings[0].save()
             let bookingBody = bookings[0].toJSON()
             bookingBody.startDate = bookingBody.startDate.toISOString().replace('T', ' ').substring(0, 10)
@@ -135,7 +144,7 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
 router.delete('/:bookingId', requireAuth, async (req, res, next) => {
     const currentUser = await User.findByPk(req.user.id)
     const booking = await Booking.findByPk(req.params.bookingId)
-    
+
     if (booking) {
         const spot = await booking.getSpot()
         if (booking.userId === currentUser.id || spot.ownerId === currentUser.id) {
@@ -147,10 +156,9 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
                 err.message = "Bookings that have been started can't be deleted"
                 next(err)
             } else {
+                const deleteBooking = booking.toJSON()
                 await booking.destroy()
-                res.json({
-                    message: "Successfully deleted"
-                })
+                res.json(deleteBooking)
             }
         } else {
             const err = new Error()

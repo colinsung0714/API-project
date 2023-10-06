@@ -36,19 +36,6 @@ const SpotReviews = ({ spotId, spot, reviews }) => {
         }
     }
 
-    const checkReviewByUser = () => {
-
-        if (!reviews.length) return 'nonvisible'
-        else {
-            for (let review of reviews) {
-                if (currentUser.id === review.userId) {
-                    return;
-                }
-            }
-            return 'nonvisible'
-        }
-    }
-
     if (!reviews.length && currentUser?.id !== spot.ownerId) {
         return (
             <div id="be-the-first-review-container">
@@ -72,19 +59,6 @@ const SpotReviews = ({ spotId, spot, reviews }) => {
             {currentUser && <OpenModalButton id="post-review-button" className={checkUser()} buttonText="Post Your Review"
                 modalComponent={<PostReviewFormModal />} />}
             <div className="spot-review-list-container">
-                {/* {reviews.sort((a, b) => {
-                    const timeA = new Date(a.createdAt)
-                    const timeB = new Date(b.createdAt)
-                    if (timeA.getTime() > timeB.getTime()) return -1
-                    if (timeA.getTime() < timeB.getTime()) return 1
-                    return 0;
-                }).map(review => {
-                   
-                return  <div key={review.id} className="review-box-container" >
-                        <ReviewList review={review} currentUser={currentUser} />
-                        </div>
-
-                })} */}
                  <ReviewList currentUser={currentUser} />
             </div>
         </div>
