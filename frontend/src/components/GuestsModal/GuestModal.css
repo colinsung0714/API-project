@@ -1,0 +1,77 @@
+.guest-modal-container {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    padding: 40px;
+    gap: 30px;
+}
+
+.guest-selection-container {
+    display: flex;
+    flex-direction: column;
+    gap:30px;
+  
+}
+
+.guest-selection-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#guest-gen-left-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#guest-selection-right-box {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+}
+
+#guest-gen-container{
+    font-size: 16pt;
+    font-weight: bold;
+}
+
+#guest-age-des-box {
+    color: darkgray;
+}
+
+#guest-icon-container i{
+    font-size: 50px;
+    cursor: pointer;
+}
+
+.guest-number-button-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+#cancel-guest-number-button {
+    border: none;
+    text-decoration: underline;
+    font-size: 15pt;
+    font-weight: bold;
+    font-family: 'Nunito', sans-serif;
+}
+
+#save-guest-number-button {
+    font-family: 'Nunito', sans-serif;
+    font-size: 15pt;
+    font-weight: bold;
+    color: white;
+    background-color: black;
+    border: none;
+    padding: 20px;
+    border-radius: 10px;
+    width: 120px
+}
+
+#minuse-guest-box i{
+    font-size: 50px;
+    cursor: pointer;
+    color: #c3c4c6;
+}

@@ -1,0 +1,11 @@
+.single-booking-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.booking-spot-detail-info-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

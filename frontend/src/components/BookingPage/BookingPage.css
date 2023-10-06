@@ -1,0 +1,26 @@
+.bookings-container {
+    margin-top: 140px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 40px;
+    margin-right: 40px;
+    width: 930px
+}
+
+.past-bookings-container-single {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.past-bookings-container-single img{
+    width: 125px;
+    height: 125px;
+    border-radius: 10px;
+}
+
+.booking-upcoming-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    cursor: pointer;
+}

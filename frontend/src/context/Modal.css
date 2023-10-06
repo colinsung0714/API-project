@@ -7,6 +7,7 @@
     display: flex;
     justify-content: center;
     z-index: 1;
+    font-family: 'Nunito', sans-serif;
 }
 
 #modal-background {
@@ -17,6 +18,7 @@
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.7);
     z-index: 1;
+    font-family: 'Nunito', sans-serif;
 }
 
 #modal-content {
@@ -31,5 +33,6 @@
     width: fit-content;
     height: fit-content;
     z-index: 2;
+  
 }
 

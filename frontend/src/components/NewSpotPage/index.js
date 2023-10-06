@@ -1,25 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom'
 import { fethPostNewSpot, fetchPostNewImage, fetchGetSpotDetail, fetchEditNewSpot, fetchEditImage } from '../../store/spots'
 import './NewSpotPage.css'
+import { useDropzone } from 'react-dropzone'
+import { Autocomplete, useJsApiLoader } from '@react-google-maps/api';
 
 const NewSpotPage = () => {
-
+    const apiKey = useSelector(state => state.maps.key)
     const dispatch = useDispatch()
     const history = useHistory()
     const location = useLocation()
     const formType = location.state?.formType || 'create'
     const spotId = location.state?.spotId
-    const updateImages = useSelector(state => state.spots.singleSpot.SpotImages)
     const updateSpot = useSelector(state => state.spots.singleSpot)
-    const currentUser = Object.values(useSelector(state=>state.session))
-   
+    const currentUser = Object.values(useSelector(state => state.session))
+    const { isLoaded } = useJsApiLoader({
+        id: 'google-map-script',
+        googleMapsApiKey: apiKey,
+        libraries: ['places']
+    });
     let updateId = spotId
     useEffect(() => {
         if (formType === 'update') {
             dispatch(fetchGetSpotDetail(spotId)).then(res => {
-                const [img1, img2, img3, img4, img5] = res.spot.SpotImages
                 setPrice(res.spot.price)
                 setCountry(res.spot.country)
                 setAddress(res.spot.address)
@@ -29,11 +33,7 @@ const NewSpotPage = () => {
                 setLongitude(res.spot.lng)
                 setDescription(res.spot.description)
                 setTitle(res.spot.name)
-                setPreviewImg(img1?.url ? img1.url : '')
-                setImgurlOne(img2?.url ? img2.url : '')
-                setImgurlTwo(img3?.url ? img3.url : '')
-                setImgurlThree(img4?.url ? img4.url : '')
-                setImgurlFour(img5?.url ? img5.url : '')
+                setImageUrls(res.spot.SpotImages?.map(img => img.url))
             })
         } else {
 
@@ -46,13 +46,10 @@ const NewSpotPage = () => {
             setLongitude('')
             setDescription('')
             setTitle('')
-            setPreviewImg('')
-            setImgurlOne('')
-            setImgurlTwo('')
-            setImgurlThree('')
-            setImgurlFour('')
         }
     }, [dispatch, formType, spotId])
+
+
     const [country, setCountry] = useState('')
     const [address, setAddress] = useState('')
     const [city, setCity] = useState('')
@@ -62,53 +59,76 @@ const NewSpotPage = () => {
     const [description, setDescription] = useState('')
     const [title, setTitle] = useState('')
     const [price, setPrice] = useState('')
-    const [previewImg, setPreviewImg] = useState('')
-    const [imgurlOne, setImgurlOne] = useState('')
-    const [imgurlTwo, setImgurlTwo] = useState('')
-    const [imgurlThree, setImgurlThree] = useState('')
-    const [imgurlFour, setImgurlFour] = useState('')
     const [errors, setErrors] = useState({})
-
-
-
-
-    const dispatchImage = async (url, spotId) => {
-        return await dispatch(fetchPostNewImage(url, spotId))
-    }
-    const checkingImgUrlExt = (img) => {
-        // if (img) {
-        // if (!img.length) return true
-        if (img.includes('.png') || img.includes('.jpg') || img.includes('.jpeg')) {
-            const splitPart = img.split('.')
-            const lastPart = splitPart[splitPart.length - 1]
-            if (lastPart !== 'png' && lastPart !== 'jpg' && lastPart !== 'jpeg') {
-                return true
+    const [images, setImages] = useState(null)
+    const [imageUrls, setImageUrls] = useState([])
+    const [searchResult, setSearchResult] = useState("");
+    const onDrop = useCallback(acceptedFiles => {
+        setImages(acceptedFiles)
+        const tempImageUrls = [];
+        acceptedFiles.forEach((file) => {
+            const url = URL.createObjectURL(file);
+            tempImageUrls.push(url);
+        });
+        setImageUrls(tempImageUrls);
+    }, [])
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        accept: {
+            'image/*': []
+        }, noClick: true, onDrop, noDragEventsBubbling: true
+    })
+    useEffect(() => {
+        const error = {}
+        if (images?.length) {
+            if (images.length > 5) {
+                error.imgLength = 'You can select only up to 5 images'
+                setImageUrls([])
             }
-            return false
+            for (let img of images) {
+                if (img.type !== 'image/png' && img.type !== 'image/jpg' && img.type !== 'image/jpeg') error.images = 'Image URL must end in .png, .jpg, or .jpeg'
+            }
         }
-        // return true
-        // }
-        // return false
-    }
+        setErrors(error)
+    }, [images])
 
+    useEffect(() => {
+        
+        if(isLoaded) {
+        // eslint-disable-next-line no-undef
+        const geocoder = new google.maps.Geocoder()
+        const geoaddress = `${address}, ${city}, ${state}`
+
+        const res = geocoder.geocode({ 'address': geoaddress }, function (results, status) {
+            if (status === 'OK') {
+                setLatitude(results[0].geometry.location.lat())
+                setLongitude(results[0].geometry.location.lng())
+            }
+        })
+    }
+    }, [address, city, state])
+    function onPlaceChanged() {
+
+        if (searchResult != null) {
+            const place = searchResult.getPlace();
+            const name = place.name;
+            const status = place.business_status;
+            const formattedAddress = place.formatted_address;
+            const addressParts = formattedAddress.split(',')
+            const nation = isNaN(Number(place.address_components[6]?.long_name)) ? place.address_components[6]?.long_name : place.address_components[5]?.long_name
+            setAddress(addressParts[0])
+            setCity(addressParts[1].slice(1))
+            setState(addressParts[2]?.split(' ')[1])
+            setCountry(nation)
+        } else {
+            setErrors({ map: "Please enter address correctly" });
+        }
+    }
+    function onLoad(autocomplete) {
+        setSearchResult(autocomplete);
+    }
     const handleSubmit = (e) => {
         e.preventDefault()
         const error = {}
-        // if (description.length < 30) error.description = "Description needs a minimum of 30 characters"
-        // if (!country.length) error.country = 'Country is required'
-        // if (!city.length) error.city = 'City is required'
-        // if (!state.length) error.state = 'State is required'
-        // if (!latitude.length) error.lat = 'Latitude is required'
-        // if (!longitude.length) error.lng = 'Longitude is required'
-        // if (!title.length) error.name = 'Name is required'
-        // if (!price.length) error.price = 'Price is requred'
-        // if (!previewImg.length) error.previewImg = 'Preview image is required'
-        // if (!address.length) error.address = 'Adress is required'
-        // if (checkingImgUrlExt(previewImg)) error.previewImgExt = 'Image URL must end in .png, .jpg, or .jpeg'
-        // if (checkingImgUrlExt(imgurlOne)) error.imgurlOne = 'Image URL must end in .png, .jpg, or .jpeg'
-        // if (checkingImgUrlExt(imgurlTwo)) error.imgurlTwo = 'Image URL must end in .png, .jpg, or .jpeg'
-        // if (checkingImgUrlExt(imgurlThree)) error.imgurlThree = 'Image URL must end in .png, .jpg, or .jpeg'
-        // if (checkingImgUrlExt(imgurlFour)) error.imgurlFour = 'Image URL must end in .png, .jpg, or .jpeg'
         const newSpot = {
             address,
             city,
@@ -120,25 +140,23 @@ const NewSpotPage = () => {
             description,
             price
         }
- 
-        // if(updateImages) imgUrls = [...updateImages]
+
         let spotId;
-      
-        const imgArr = [previewImg && previewImg, imgurlOne && imgurlOne, imgurlTwo && imgurlTwo, imgurlThree && imgurlThree, imgurlFour && imgurlFour]
+
         if (!Object.values(error).length) {
             if (formType === 'update') {
-              
-                let imgUrls = [
-                    {id:updateImages[0]?.id , url:previewImg, preview:true},
-                    {id:updateImages[1]?.id, url:imgurlOne, preview:false},
-                    {id:updateImages[2]?.id, url:imgurlTwo, preview:false},
-                    {id:updateImages[3]?.id, url:imgurlThree, preview:false},
-                    {id:updateImages[4]?.id, url:imgurlFour, preview:false}
-                ]
-               
-                dispatch(fetchEditNewSpot(newSpot, updateSpot.id, imgUrls))
-                    .then(
-                       dispatch(fetchEditImage(imgUrls))
+
+                dispatch(fetchEditNewSpot(newSpot, updateSpot.id))
+                    .then(() => {
+
+                        const formData = new FormData()
+                        if (images && images.length !== 0) {
+                            for (let image of images) {
+                                formData.append('images', image)
+                            }
+                        }
+                        dispatch(fetchEditImage(formData, updateId))
+                    }
                     )
                     .then(() => {
                         setErrors({})
@@ -147,36 +165,21 @@ const NewSpotPage = () => {
                         const error = await res.json()
                         if (error.errors) {
                             let errorObj = { ...error.errors }
-                            if (!previewImg.length) errorObj.previewImg = 'Preview image is required'
-                            if (checkingImgUrlExt(previewImg)) errorObj.previewImgExt = 'Image URL must end in .png, .jpg, or .jpeg'
-                            if (checkingImgUrlExt(imgurlOne)) errorObj.imgurlOne = 'Image URL must end in .png, .jpg, or .jpeg'
-                            if (checkingImgUrlExt(imgurlTwo)) errorObj.imgurlTwo = 'Image URL must end in .png, .jpg, or .jpeg'
-                            if (checkingImgUrlExt(imgurlThree)) errorObj.imgurlThree = 'Image URL must end in .png, .jpg, or .jpeg'
-                            if (checkingImgUrlExt(imgurlFour)) errorObj.imgurlFour = 'Image URL must end in .png, .jpg, or .jpeg'
                             setErrors(errorObj);
                         }
                     })
-                    return;
-            } 
+                return;
+            }
 
             dispatch(fethPostNewSpot(newSpot)).then(spot => {
                 spotId = spot.id
-                for (let i = 0; i < imgArr.length; i++) {
-                    let imgurl = imgArr[i]
-                    const url = {}
-                    if (imgurl) {
-                        if (i === 0) {
-                            url.preview = true
-                            url.url = imgurl
-                            dispatchImage(url, spotId)
-                            continue;
-                        }
-                        url.url = imgurl
-                        url.preview = false
-                        console.log(url)
-                        dispatchImage(url, spotId)
+                const formData = new FormData()
+                if (images && images.length !== 0) {
+                    for (let image of images) {
+                        formData.append('images', image)
                     }
                 }
+                dispatch(fetchPostNewImage(formData, spotId))
                 setErrors({})
                 history.push(`/spots/${spotId}`)
 
@@ -184,12 +187,6 @@ const NewSpotPage = () => {
                 const error = await res.json()
                 if (error.errors) {
                     let errorObj = { ...error.errors }
-                    if (!previewImg.length) errorObj.previewImg = 'Preview image is required'
-                    if (checkingImgUrlExt(previewImg)) errorObj.previewImgExt = 'Image URL must end in .png, .jpg, or .jpeg'
-                    if (checkingImgUrlExt(imgurlOne)) errorObj.imgurlOne = 'Image URL must end in .png, .jpg, or .jpeg'
-                    if (checkingImgUrlExt(imgurlTwo)) errorObj.imgurlTwo = 'Image URL must end in .png, .jpg, or .jpeg'
-                    if (checkingImgUrlExt(imgurlThree)) errorObj.imgurlThree = 'Image URL must end in .png, .jpg, or .jpeg'
-                    if (checkingImgUrlExt(imgurlFour)) errorObj.imgurlFour = 'Image URL must end in .png, .jpg, or .jpeg'
                     setErrors(errorObj);
                 }
             })
@@ -197,23 +194,29 @@ const NewSpotPage = () => {
             setErrors(error)
         }
     }
-    if(!currentUser[0]) return null
+    if (!currentUser[0]) return null
     return (
         <div className="new-spot-container">
-
-
+            <h1 style={{width:"auto"}}>
+                {formType === 'update' ? 'Update your Spot' : 'Create a New Spot'}
+            </h1>
+            <div className="new-from-subheading">
+                Where's Your Place Located?
+            </div>
+            <div style={{ width: "auto" }} className="new-form-content">
+                Guest will only get your exact address once they booked a reservation.
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", padding: "5px 0", width: "100%" }}>
+                <div>Where is your spot?</div>
+                {isLoaded &&
+                    <Autocomplete onPlaceChanged={onPlaceChanged} onLoad={onLoad}>
+                        <input style={{ width: "100%", border: "solid 1px black", height:"20px" }} type="text" />
+                    </Autocomplete>}
+            </div>
             <form onSubmit={e => handleSubmit(e)}>
 
                 <div className="place-image-container">
-                    <h1>
-                        {formType === 'update' ? 'Update your Spot' : 'Create a New Spot'}
-                    </h1>
-                    <div className="new-from-subheading">
-                        Where's Your Place Located?
-                    </div>
-                    <div className="new-form-content">
-                        Guest will only get your exact address once they booked a reservation.
-                    </div>
+
                     <div className="country-input-container">
                         <div className="country-label-container">
                             <label htmlFor="country">Country</label>
@@ -298,23 +301,37 @@ const NewSpotPage = () => {
                     <div className="img-url-container">
                         <div className="new-from-subheading">Liven up your spot with photos</div>
                         <div className="new-form-content">Submit a link to at least one photo to publish your spot.</div>
-                        <input type='url' name="previewImage" placeholder="Preview Image URL" value={previewImg} onChange={(e) => setPreviewImg(e.target.value)} />
-                        <p>{errors?.previewImg && errors?.previewImg}</p>
-                        <p>{errors?.previewImgExt && errors?.previewImgExt}</p>
-                        <input type='url' name="imageOne" placeholder="Image URL" value={imgurlOne} onChange={(e) => setImgurlOne(e.target.value)} />
-                        <p>{errors?.imgurlOne && errors?.imgurlOne}</p>
-                        <input type='url' name="imageTwo" placeholder="Image URL" value={imgurlTwo} onChange={(e) => setImgurlTwo(e.target.value)} />
-                        <p>{errors?.imgurlTwo && errors?.imgurlTwo}</p>
-                        <input type='url' name="imageThree" placeholder="Image URL" value={imgurlThree} onChange={(e) => setImgurlThree(e.target.value)} />
-                        <p>{errors?.imgurlThree && errors?.imgurlThree}</p>
-                        <input type='url' name="imageFour" placeholder="Image URL" value={imgurlFour} onChange={(e) => setImgurlFour(e.target.value)} />
-                        <p>{errors?.imgurlFour && errors?.imgurlFour}</p>
+                        <div style={{ width: '100%' }}>
+                            <label style={{ width: '100%', display: "flex", flexDirection: "column", gap: "10px" }}>
+                                <div className="drag-drop-pic-piclist-container">
+                                    <div id="drag-drop-pic-container" {...getRootProps()}>
+                                        <input {...getInputProps()} />
+                                        {
+                                            isDragActive ?
+                                                <p style={{ color: "#2684ff" }}>Drop the images here ...</p> :
+                                                <p style={{ color: "darkgray" }}>Drag 'n' drop some images here, or click to select images</p>
+                                        }
+                                    </div>
+                                    <div style={{ width: "510px", paddingTop: "10px" }}>
+                                        {imageUrls?.length > 0 &&
+                                            <ul>
+                                                <li>Image Preview</li>
+                                                {imageUrls.map(el => <img style={{ width: "90px", height: "90px", borderRadius: "10px" }} src={el} key={el} />)}
+                                            </ul>}
+                                    </div>
+                                </div>
+                            </label>
+
+                            <p style={{ color: "red" }}>{errors?.images && errors?.images}</p>
+                            <p style={{ color: "red" }}>{errors?.imgLength && errors?.imgLength}</p>
+                        </div>
+
+
                     </div>
                 </div>
 
-
-
-                <button id="new-spot-submit" type="submit">{formType === 'update' ? 'Update your Spot' : 'Create a New Spot'}</button>
+                <p style={{ color: "red" }}>{errors?.map && errors?.map}</p>
+                <button style={Object.values(errors).length > 0 ? { backgroundColor: "#ccc", color: "#666", cursor: "not-allowed" } : null} id="new-spot-submit" type="submit">{formType === 'update' ? 'Update your Spot' : 'Create a New Spot'}</button>
             </form>
         </div>
     )

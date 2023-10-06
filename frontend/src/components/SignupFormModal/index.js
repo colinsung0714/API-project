@@ -13,6 +13,7 @@ function SignupFormModal() {
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [image, setImage] = useState(null);
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
   const history=useHistory()
@@ -31,21 +32,21 @@ function SignupFormModal() {
     e.preventDefault();
     if (password === confirmPassword) {
       setErrors({});
+      const formData = new FormData()
+      formData.append('email', email)
+      formData.append('username', username)
+      formData.append('firstName', firstName)
+      formData.append('lastName', lastName)
+      formData.append('password', password)
+      formData.append('image', image)
+
       return dispatch(
-        sessionActions.signup({
-          email,
-          username,
-          firstName,
-          lastName,
-          password,
-        })
+        sessionActions.signup(formData)
       )
         .then(closeModal)
         .then(()=>history.push('/'))
-        .catch(async (res) => {
-          const data = await res.json();
+        .catch((data) => {
           if (data && data.errors) {
-            console.log(data)
             setErrors(data.errors);
           }
         });
@@ -57,7 +58,7 @@ function SignupFormModal() {
   return (
     <div className="sign-up-form-container">
       <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         {errors.firstName && <p>{errors.firstName}</p>}
         {errors.lastName && <p>{errors.lastName}</p>}
         {errors.email && <p>{errors.email}</p>}
@@ -123,6 +124,13 @@ function SignupFormModal() {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
 
+        />
+
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setImage(e.target.files[0])}
+          id="file-upload-input-sign-up"
         />
 
 

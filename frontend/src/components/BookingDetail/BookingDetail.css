@@ -1,0 +1,190 @@
+.booking-detail-container {
+    margin-top: 120px;
+    display: flex;
+    width: 100%;
+    gap: 20px;
+}
+
+.booking-detail-left-container {
+    overflow: auto;
+    width: 100%;
+}
+
+.booking-detail-right-container {
+    width: 100%;
+}
+
+#booking-photos-container {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    width: 90%;
+}
+
+#photo-selector-icon {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    color: white;
+    cursor: pointer;
+    font-size: 40px;
+    z-index: 1;
+}
+
+#photo-tracker-container {
+    width: auto;
+}
+
+#outer-photo-tracker {
+    position: absolute;
+    bottom: 30px;
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    justify-content: center;
+}
+
+#title-photo-booking-detail-box {
+    display: flex;
+    position: absolute;
+    padding: 20px;
+    font-weight: bold;
+    color: white;
+    font-size: 30px;
+    top: 50px;
+}
+
+#back-to-manage-booking-icon {
+    display: flex;
+    position: absolute;
+    padding: 20px;
+    font-size: 30px;
+    cursor: pointer;
+    color: white;
+}
+
+.booking-checkin-checkout-container {
+    display: flex;
+    width: 90%
+}
+
+.booking-check-left {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.booking-check-right {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.booking-detail-address-container {
+    display: flex;
+    padding: 20px;
+    width: 90%;
+    align-items: center;
+    gap: 20px;
+}
+
+.booking-detail-address-container i{
+    font-size: 35px;
+    padding: 30px 0;
+}
+
+.reservation-detail-booking-container {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    padding: 20px;
+    gap: 10px;
+}
+
+#reservation-detail-guest-box {
+    display: flex;
+    width: 100%;
+    padding: 10px 0;
+    justify-content: space-between;
+}
+
+#reservation-detail-guest-box-left {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#reservation-detail-guest-box-right {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    
+}
+
+
+
+#user-profile-pic-guest {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+
+#extra-guest-photo {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+.cancellation-reservation-detail-box {
+    display: flex;
+    flex-direction: column;
+    padding: 30px 0;
+}
+
+#cancellation-policy-message {
+    font-weight: bold;
+    padding: 10px 0;
+}
+
+.update-reservation-button-container {
+    display: flex;
+    width: 90%;
+    gap: 20px;
+    align-items: center;
+    padding: 20px;
+    cursor: pointer;
+}
+
+.update-reservation-button-container div{
+    width: 100%;
+}
+
+.cancel-reservation-button-container {
+    display: flex;
+    width: 90%;
+    gap: 20px;
+    align-items: center;
+    padding: 20px;
+    cursor: pointer;
+}
+
+.cancel-reservation-button-container div{
+    width: 100%;
+} 
+
+#user-location-direction{
+    cursor: pointer;
+}
+
+#distance-duration-status-box {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    font-size: 15px;
+    color: darkgray;
+}

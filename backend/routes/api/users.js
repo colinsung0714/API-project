@@ -5,6 +5,7 @@ const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { User } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const { singleMulterUpload, singlePublicFileUpload, multipleMulterUpload } = require('../../awsS3')
 const validateSignup = [
   check('email')
     .exists({ checkFalsy: true })
@@ -26,9 +27,11 @@ const validateSignup = [
 ];
 
 router.post(
-  '/',
+  '/', singleMulterUpload('image'),
   validateSignup,
   async (req, res, next) => {
+    const image = await singlePublicFileUpload(req.file)
+    console.log(image)
     const { firstName, lastName, email, password, username } = req.body;
     const emailcheck = await User.findAll({
       where: {
@@ -62,7 +65,7 @@ router.post(
       next(err)
     }
     const hashedPassword = bcrypt.hashSync(password);
-    const user = await User.create({ firstName, lastName, email, username, hashedPassword });
+    const user = await User.create({ firstName, lastName, email, username, hashedPassword, profileUrl:image });
 
     const safeUser = {
       id: user.id,
@@ -70,6 +73,7 @@ router.post(
       lastName: user.lastName,
       email: user.email,
       username: user.username,
+      profileUrl:user.profileUrl
     };
 
     await setTokenCookie(res, safeUser);

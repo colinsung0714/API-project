@@ -131,3 +131,52 @@ header {
     background-color: white;
     color: #00525E;
 }
+
+#user-booking-manage-button {
+    cursor: pointer;
+}
+
+#user-profile-pic {
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+}
+
+.cancel-nav-container {
+    display: flex;
+    font-family: 'Nunito', sans-serif;
+    gap: 20px;
+    font-size: 20px;
+    align-items: center;
+    color: darkgray;
+}
+.cancel-right-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    padding: 20px;
+}
+.cancel-right-upper-container {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+}
+
+.cancel-right-upper-container img {
+    width: 200px;
+    height: 150px;
+    border-radius: 10px;
+} 
+
+#cancel-right-upper-spot-info-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+    justify-content: center;
+}
+
+#cancel-owner-info-box {
+    display: flex;
+    gap: 5px;
+}

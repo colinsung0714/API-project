@@ -5,6 +5,7 @@ import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 import { useHistory } from "react-router-dom";
+import '../Navigation/Navigation.css'
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
@@ -17,9 +18,10 @@ function ProfileButton({ user }) {
 
   useEffect(() => {
     if (!showMenu) return;
-
+    const header = document.querySelector('header')
+    header.style.display = ''
     const closeMenu = (e) => {
-      if (!ulRef.current.contains(e.target)) {
+      if (!ulRef.current?.contains(e.target)) {
         setShowMenu(false);
       }
     };
@@ -42,7 +44,7 @@ function ProfileButton({ user }) {
     <>
       <button id="user-profile-button" onClick={openMenu}>
         <i className="fa-solid fa-bars"></i>
-        <i className="fas fa-user-circle" ></i>
+        {user ? <img id="user-profile-pic" src={user.profileUrl} alt={user.profileUrl}/>:<i className="fas fa-user-circle" ></i>}
       </button>
       <div className={ulClassName} ref={ulRef}>
         {user ? (
@@ -50,9 +52,17 @@ function ProfileButton({ user }) {
             <div id='hello-user-header'>Hello, {user.username}</div>
             <div id='user-email-header'>{user.email}</div>
             <div id='user-manage-spot-header' onClick={()=>{
-              history.push('/current')
+            const header = document.querySelector('header')
+            header.style.display = ''
+              history.push('/current')              
               setShowMenu(false)
               }}>Manage Spots</div>
+            <div id='user-booking-manage-button' onClick={()=>{
+              const header = document.querySelector('header')
+              header.style.display = ''
+              history.push('/bookings/current')
+              setShowMenu(false)
+            }}>Manage Bookigs</div>
             <div>
               <button id='user-logout-header-button' onClick={logout}>Log Out</button>
             </div>

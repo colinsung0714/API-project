@@ -6,7 +6,7 @@ import '../ManageSpotPage/ManageSpotPage.css'
 import OpenModalButton from "../OpenModalButton";
 import DeleteSpotModal from '../DeleteSpotModal'
 
-const SpotContainer = ({ spot, formType }) => {
+const SpotContainer = ({ spot, formType}) => {
     const [tooltip, setTooltip] = useState(false)
     
     const history = useHistory()
@@ -26,7 +26,7 @@ const SpotContainer = ({ spot, formType }) => {
           });
     }
     if(!Object.values(spot).length) return null;
-    
+  
     return (
         
         <div className="spot-container">

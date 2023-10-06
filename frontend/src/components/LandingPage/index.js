@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchgetAllSpots } from '../../store/spots'
 import SpotContainer from './SpotContainer'
+
 import './LandingPage.css'
 const LandingPage = () => {
     const spots = Object.values(useSelector(state => state.spots.allSpots))

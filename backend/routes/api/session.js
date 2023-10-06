@@ -13,6 +13,7 @@ const validateLogin = [
       .withMessage("Email or username is required"),
     check('password')
       .exists({ checkFalsy: true })
+      .notEmpty()
       .withMessage("Password is required"),
     handleValidationErrors
   ];
@@ -28,6 +29,7 @@ router.get(
           lastName:user.lastName,
           email: user.email,
           username: user.username,
+          profileUrl:user.profileUrl
         };
         return res.json({
           user: safeUser
@@ -41,7 +43,6 @@ router.get(
     validateLogin,
     async (req, res, next) => {
       const { credential, password } = req.body;
-  
       const user = await User.unscoped().findOne({
         where: {
           [Op.or]: {
@@ -63,6 +64,7 @@ router.get(
         lastName: user.lastName,
         email: user.email,
         username: user.username,
+        profileUrl:user.profileUrl
       };
   
       await setTokenCookie(res, safeUser);

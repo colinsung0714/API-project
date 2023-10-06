@@ -1,0 +1,166 @@
+#weeks {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    padding: 10px;
+}
+
+#calender-format-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.date-disable {
+   opacity: 0;
+}
+
+.date-choose-container {
+    display: flex;
+    font-family: 'Nunito', sans-serif;
+    flex-direction: column;
+}
+
+.each-day {
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+    background-color: transparent;
+}
+
+.calender-container {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+}
+
+#weeks input {
+    width:50px
+}
+
+.activeIn {
+    border-radius: 50%;
+    background-color: black;
+    color: white;
+    pointer-events: none;
+}
+
+#activeOut {
+    border-radius: 50%;
+    background-color: black;
+    color: white;
+    pointer-events: none;
+}
+
+.past-day {
+    color: lightgray;
+    cursor: default;
+}
+
+.date-select-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.date-select-left-container {
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.date-select-right.container {
+    display: flex;
+    align-items: center;
+}
+
+#checkin-date-container {
+    padding: 10px;
+    border: solid 1px lightgray;
+    border-radius: 10px;
+}
+
+#checkout-date-container {
+    padding: 10px;
+    border: solid 1px lightgray;
+    border-radius: 10px;
+}
+
+#checkin-date {
+    font-weight: bold;
+}
+
+#checkout-date {
+    font-weight: bold;
+}
+
+#weeks div {
+    text-align: center;
+    padding: 5px
+}
+
+#weeks input {
+    text-align: center;
+    padding: 5px;
+    width: 40px;
+    height: 40px;
+    font-weight: bold;
+}
+
+#calender-button-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+#calender-button-container button {
+    border: none;
+    background-color: black;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    width: 80px;
+}
+
+#arrow-current-month-box {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    position: relative;
+}
+
+#arrow-next-month-box {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    position: relative;
+}
+
+#next-month-arrow {
+    position: absolute;
+    right: 30px;
+    cursor: pointer;
+}
+
+#current-month-arrow {
+    position: absolute;
+    left: 30px;
+    cursor: pointer;
+}
+
+#go-back-month {
+    position: absolute;
+    z-index: 10;
+    top: 15px;
+    left:30px;
+}
+
+#go-next-month {
+    position: absolute;
+    z-index: 10;
+    top: 15px;
+    right:30px;
+}

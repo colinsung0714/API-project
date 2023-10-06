@@ -38,6 +38,22 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull:false
       },
+      guests: {
+        type: Sequelize.INTEGER,
+        allowNull:false
+      },
+      accomodation: {
+        type: Sequelize.DECIMAL(10,2),
+      },
+      serviceFee: {
+        type: Sequelize.DECIMAL(10,2),
+      },
+      taxes: {
+        type: Sequelize.DECIMAL(10,2),
+      },
+      total: {
+        type: Sequelize.DECIMAL(10,2),
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

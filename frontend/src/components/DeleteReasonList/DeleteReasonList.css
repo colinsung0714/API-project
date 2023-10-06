@@ -1,0 +1,11 @@
+#option-input-list {
+    border: none;
+    width: 97%;
+    padding: 10px;
+    display: flex;
+    border-radius: 10px;
+}
+
+#option-input-list:focus {
+    outline: none;
+}

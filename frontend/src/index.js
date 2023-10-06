@@ -11,7 +11,7 @@ import App from "./App";
 import configureStore from "./store";
 import { restoreCSRF, csrfFetch } from "./store/csrf";
 import * as sessionActions from "./store/session";
-
+import BookingdateProvider from "./context/BookingdateContext"
 const store = configureStore();
 
 if (process.env.NODE_ENV !== "production") {
@@ -28,12 +28,14 @@ if (process.env.NODE_ENV !== "production") {
 function Root() {
   return (
     <ModalProvider>
+      <BookingdateProvider >
       <Provider store={store}>
         <BrowserRouter>
           <App />
           <Modal />
         </BrowserRouter>
       </Provider>
+      </BookingdateProvider>
     </ModalProvider>
   );
 }

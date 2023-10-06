@@ -5,7 +5,7 @@ const { requireAuth } = require('../../utils/auth')
 const { check, query } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { Op } = require("sequelize");
-const e = require('express');
+const { multipleMulterUpload, multiplePublicFileUpload } = require('../../awsS3')
 const validateSpot = [
     check('address')
         .exists({ checkFalsy: true })
@@ -361,7 +361,7 @@ router.get('/', validateQuery, async (req, res) => {
         spot.updatedAt = spot.updatedAt.toISOString().replace('T', ' ').substring(0, 19)
         for (let num of avgRating) {
             num = num.toJSON();
-            spot.avgRating = parseInt((Object.values(num)[0]));
+            spot.avgRating = parseFloat((Object.values(num)[0]));
         }
         for (let url of previewImage) {
             url = url.toJSON();
@@ -369,7 +369,6 @@ router.get('/', validateQuery, async (req, res) => {
         }
         Spots.push(spot);
     }
-
     page = Number(page)
     size = Number(size)
     res.json({ Spots, page, size })
@@ -379,10 +378,11 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
     const currentUser = await User.findByPk(req.user.id)
     const spot = await Spot.findByPk(req.params.spotId)
     if (spot) {
+   
         if (currentUser.id !== spot.ownerId) {
-            let { startDate, endDate } = req.body
+            let { startDate, endDate, guests, accomodation, serviceFee, taxes, total } = req.body
             const bookings = await spot.getBookings({
-                attributes: ['startDate', 'endDate']
+                attributes: ['startDate', 'endDate', 'guests']
             })
             const pivStartDate = new Date(startDate).getTime()
             const pivEndDate = new Date(endDate).getTime()
@@ -418,9 +418,17 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
             body.userId = currentUser.id
             body.startDate = startDate
             body.endDate = endDate
+            body.guests = guests
+            body.accomodation = accomodation
+            body.serviceFee = serviceFee
+            body.taxes = taxes
+            body.total = total
             const newBooking = await spot.createBooking(body)
-
+            const bookingSpot = await newBooking.getSpot()
+            
             let bodyBooking = newBooking.toJSON()
+            let bodySpot = bookingSpot.toJSON()
+            bodyBooking.Spot = bodySpot
             bodyBooking.startDate = bodyBooking.startDate.toISOString().replace('T', ' ').substring(0, 10)
             bodyBooking.endDate = bodyBooking.endDate.toISOString().replace('T', ' ').substring(0, 10)
             bodyBooking.createdAt = bodyBooking.createdAt.toISOString().replace('T', ' ').substring(0, 19)
@@ -440,7 +448,7 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
     }
 })
 
-router.post('/:spotId/images', requireAuth, async (req, res, next) => {
+router.post('/:spotId/images', multipleMulterUpload('images'), requireAuth, async (req, res, next) => {
     const spot = await Spot.findByPk(req.params.spotId)
     if (spot) {
         const currentUser = await User.findByPk(req.user.id)
@@ -451,14 +459,38 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
             }
         })
         if (currentSpot.length) {
-            const { url, preview } = req.body
-            let newImg = await currentSpot[0].createSpotImage({ url, preview })
-            newImg = newImg.toJSON()
-            const body = {}
-            body.id = newImg.id
-            body.url = newImg.url
-            body.preview = newImg.preview
-            res.json(body)
+            const imagesList = await multiplePublicFileUpload(req.files)
+            let newImg
+            let body = []
+            if (imagesList.length) {
+                for (let i = 0; i < imagesList.length; i++) {
+                    const imgObj = {}
+                    const imgUrl = imagesList[i]
+                    let url;
+                    let preview;
+                    if (i === 0) {
+                        url = imgUrl
+                        preview = true
+                        newImg = await currentSpot[0].createSpotImage({ url, preview });
+                        newImg = newImg.toJSON()
+                        imgObj.id = newImg.id
+                        imgObj.url = newImg.url
+                        imgObj.preview = newImg.preview
+                        body.push(imgObj)
+                    } else {
+                        preview = false
+                        url = imgUrl
+                        newImg = await currentSpot[0].createSpotImage({ url, preview })
+                        newImg = newImg.toJSON()
+                        imgObj.id = newImg.id
+                        imgObj.url = newImg.url
+                        imgObj.preview = newImg.preview
+                        body.push(imgObj)
+                    }
+                }
+            }
+
+            return res.json(body)
         } else {
             const err = new Error()
             err.status = 403
@@ -502,6 +534,7 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
 
 
 router.post('/', requireAuth, validateSpot, async (req, res) => {
+
     const { address, city, state, country, lat, lng, name, description, price } = req.body
     const currentUser = await User.findByPk(req.user.id)
 

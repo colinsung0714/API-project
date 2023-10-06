@@ -1,0 +1,219 @@
+.new-booking-container {
+    margin-top: 140px;
+    box-sizing: content-box;
+    font-family: 'Nunito', sans-serif;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.new-booking-container > div{
+    padding: 0 90px;
+}
+
+#back-request-book {
+    text-decoration: none;
+    color: black;
+   
+    display: flex;
+    align-items: center;
+    gap:20px;
+   
+}
+
+#back-request-book div {
+    font-size: 24pt;
+    font-weight: bold;
+}
+
+#back-request-book i {
+    cursor: pointer;
+}
+
+#date-sumit-button {
+    font-family: 'Nunito', sans-serif;
+}
+
+.new-booking-sub-container {
+    position: relative;
+    display: flex;
+    gap: 50px;
+}
+
+.top-detail-container img{
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+}
+
+.date-period-guest-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 500px;
+
+}
+
+.new-booking-sub-left-container {
+   
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+}
+
+.date-period-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+}
+
+#date-period-container-left {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#date-sumit-button {
+    border: none;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.guests-edit-container{
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+    align-items: center;
+}
+
+#new-booking-guests {
+    font-weight: bold;
+}
+
+.new-booking-sub-right-container {
+    display: flex;
+    width: 300px;
+    border: solid 1px lightgray;
+    padding: 30px;
+    border-radius: 10px;
+    position: sticky;
+    top: 200px;
+    right: 100px;
+}
+
+.new-booking-detail-container {
+    width: 100%;
+}
+
+.top-detail-container {
+    display: flex;
+    gap: 10px;
+    border-bottom: solid 1px lightgray;
+    padding-bottom: 20px;
+}
+
+.top-right-detail-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#top-right-detail-avgstar-numreview {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+#top-right-detail-avgstar {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#top-right-detail-numreview {
+    width: 100px
+}
+
+.middle-detail-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-top: 20px;
+}
+
+.price-times-nights-container {
+    display: flex;
+    justify-content: space-between;
+    padding:5px 0;
+}
+
+.cleaningfee-container {
+    display: flex;
+    justify-content: space-between;
+    padding:5px 0;
+}
+
+.airbrb-servicefee-container {
+    display: flex;
+    justify-content: space-between;
+    padding:5px 0;
+}
+
+.taxes-container {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 5px;
+    padding-bottom: 40px;
+    border-bottom: solid 1px lightgray;
+}
+
+.bottom-detail-container {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 40px;
+
+}
+
+.your-trip-container {
+    width: 100%;
+    padding-bottom: 40px;
+}
+
+#guest-number-button {
+    border: none;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+}
+
+.cancellation-container {
+    display: flex;
+    flex-direction: column;
+    border-top: solid 1px lightgray;
+    padding: 20px 0;
+}
+
+#cancellation-content-bot {
+    border-bottom: solid 1px lightgray;
+    padding-bottom: 30px;
+}
+
+#new-booking-submit-button {
+    background-color: red;
+    cursor: pointer;
+    font-size: 14pt;
+    text-align: center;
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    margin: 10px;
+    box-shadow: 4px 4px 2px black;
+    border: none;
+    border-radius: 10px;
+    padding: 15px 30px;
+}

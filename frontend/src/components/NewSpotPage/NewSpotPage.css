@@ -1,8 +1,6 @@
 .new-spot-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     font-family: 'Nunito', sans-serif;
     margin-top: 100px;
 }
@@ -31,10 +29,13 @@
 .new-from-subheading {
     font-size: 18pt;
     font-weight: bold;
+    width: auto;
 }
 
 .new-form-content {
-    font-size: 14pt;
+    font-size: 13pt;
+    padding: 10px 0px;
+    word-wrap: break-word;
 }
 
 #describe-input {
@@ -52,7 +53,7 @@
 }
 
 .country-label-container {
-    margin-top: 20px;
+    margin-top: 5px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -268,4 +269,24 @@
     width: fit-content;
     height: 50px;
     margin-bottom: 30px;
+}
+
+.drag-drop-pic-piclist-container {
+    border: solid 1px lightgray;
+    border-radius: 5px;
+    padding: 30px;
+}
+
+#drag-drop-pic-container {
+ 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: lightgray;
+    padding: 20px;
+    border: dashed 1px lightgray;
+}
+
+#drag-drop-pic-container:focus {
+    outline: dashed #2684ff;
 }
