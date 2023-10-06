@@ -59,7 +59,7 @@ module.exports = {
         price: 4500
       },
       {
-        ownerId: 1,
+        ownerId: 2,
         address: '1212 3rd Street Promenade',
         city: 'Santa Monica',
         state: 'CA',
@@ -71,7 +71,7 @@ module.exports = {
         price: 3000
       },
       {
-        ownerId: 1,
+        ownerId: 2,
         address: '414 S Western Ave B',
         city: 'Los Angeles',
         state: 'CA',
@@ -83,7 +83,7 @@ module.exports = {
         price: 4000
       },
       {
-        ownerId: 1,
+        ownerId: 2,
         address: '1880A W.Carson',
         city: 'Carson',
         state: 'CA',
@@ -95,7 +95,7 @@ module.exports = {
         price: 2500
       },
       {
-        ownerId: 1,
+        ownerId: 2,
         address: '1 Pine Avenue',
         city: 'Long Beach',
         state: 'CA',
@@ -107,7 +107,7 @@ module.exports = {
         price: 3500
       },
       {
-        ownerId: 1,
+        ownerId: 2,
         address: '21532 Hawthorne Blvd',
         city: 'Torrance',
         state: 'CA',
@@ -119,7 +119,7 @@ module.exports = {
         price: 6000
       },
       {
-        ownerId: 1,
+        ownerId: 2,
         address: '514 N Pacific Coast Hwy',
         city: 'Redondo Beach',
         state: 'CA',
@@ -131,7 +131,7 @@ module.exports = {
         price: 4200
       },
       {
-        ownerId: 1,
+        ownerId: 2,
         address: '2732 Main St',
         city: 'Santa Monica',
         state: 'CA',
@@ -143,7 +143,7 @@ module.exports = {
         price: 7000
       },
       {
-        ownerId: 1,
+        ownerId: 2,
         address: '2732 Main St',
         city: 'Manhattan Beach',
         state: 'CA',
@@ -155,7 +155,7 @@ module.exports = {
         price: 3800
       },
       {
-        ownerId: 1,
+        ownerId: 2,
         address: '235 N Canon Dr',
         city: 'Beverly Hills',
         state: 'CA',
@@ -167,7 +167,7 @@ module.exports = {
         price: 2700
       },
       {
-        ownerId: 1,
+        ownerId: 2,
         address: '3322 Wilshire Blvd',
         city: 'Los Angeles',
         state: 'CA',
@@ -179,7 +179,7 @@ module.exports = {
         price: 4800
       },
       {
-        ownerId: 1,
+        ownerId: 2,
         address: '100 S Grand Ave',
         city: 'Los Angeles',
         state: 'CA',
