@@ -34,7 +34,8 @@
 
 
 ## Reservation Detail Page
-![image](https://github.com/colinsung0714/API-project/assets/99006739/9baf35db-3af2-43f3-b88c-7ecaf9cfd6b1)
+![image](https://github.com/colinsung0714/API-project/assets/99006739/2d8d2227-90fd-4c92-a333-2c5b23e9209e)
+
 
 
 ## Getting started
