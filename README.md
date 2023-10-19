@@ -1,5 +1,5 @@
 # Airbrb
-"Airbrb is a project aimed at creating a partial clone of the popular vacation rental website 'Airbnb.' Airbrb allows users to discover and book accommodations for their travels. Its user-friendly interface, extensive property listings, and seamless booking process make it easy to use.
+Airbrb is a project aimed at creating a partial clone of the popular vacation rental website 'Airbnb.' Airbrb allows users to discover and book accommodations for their travels. Its user-friendly interface, extensive property listings, and seamless booking process make it easy to use.
 # Live Link
 [https://airbrb-rqip.onrender.com](https://airbrb-rqip.onrender.com)
 # Tech Stack
